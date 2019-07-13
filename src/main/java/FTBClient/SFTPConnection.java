@@ -1,14 +1,13 @@
 package FTBClient;
 
 import com.jcraft.jsch.*;
-import java.io.*;
 //import java.lang.invoke.DirectMethodHandle$Holder;
-import java.util.*;
+
 
 public class SFTPConnection {
 
     String username, host, pwd;
-    static final int port = 22;
+    static final int PORT = 22;
     Session session = null;
     ChannelSftp sftpChannel = null;
     boolean connected = false;
@@ -20,11 +19,11 @@ public class SFTPConnection {
         this.pwd = pwd;
     }
 
-    public void Connect(){
+    public void connect(){
 
         try {
             JSch jsch = new JSch(); //Creates a class object of JSch which allows us to access a server over sftp
-            session = jsch.getSession(username, host, port); //returns a session object
+            session = jsch.getSession(username, host, PORT); //returns a session object
             session.setPassword(pwd);
             session.setConfig("StrictHostKeyChecking", "no"); //may want to investigate this
             System.out.println("Establishing Connection with " + host + "...");
@@ -42,7 +41,7 @@ public class SFTPConnection {
 
     }
 
-    public void Disconnect(){
+    public void disconnect(){
 
         sftpChannel.disconnect();
         session.disconnect();

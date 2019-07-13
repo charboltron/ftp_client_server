@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="FTBClient.CLITests" time="0.025" tests="5" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="FTBClient.SFTPConnectTest" time="0.624" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
     <property name="java.specification.version" value="12"/>
@@ -55,9 +55,5 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="56.0"/>
   </properties>
-  <testcase name="clientManagerReturnsMenuWithMenuFlag" classname="FTBClient.CLITests" time="0.006"/>
-  <testcase name="setCommandSetsCommand" classname="FTBClient.CLITests" time="0"/>
-  <testcase name="displayMenuPrintsMenu" classname="FTBClient.CLITests" time="0"/>
-  <testcase name="clientManagerDefaultsToDisplayMenu" classname="FTBClient.CLITests" time="0.003"/>
-  <testcase name="clientManagerReturnsUploaderTempWithMenuFlag" classname="FTBClient.CLITests" time="0"/>
+  <testcase name="testConnection" classname="FTBClient.SFTPConnectTest" time="0.623"/>
 </testsuite>

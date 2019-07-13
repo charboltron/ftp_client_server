@@ -5,59 +5,131 @@ import java.util.Scanner;
 public class CommandLineInterface {
 
     private String command;
-    public String userName;
-    public String password;
-    public String menu = String.join("\n", "Welcome to the FTP Client Interface"
-            , "\n\tThe following is a list of available commands:"
-            , "\t-m :\tPrint menu options"
-            , "\t-u :\tUpload a file to current directory"
-            , "\tMORE MENU OPTIONS COMING");
+    private String userName;
+    private String password;
+    private final String HOST = "104.248.67.51";
+
+    public SFTPConnection ourConnection;
+
+    private StringBuilder greeting = new StringBuilder("Welcome to the SFTP Client interface." +
+            "\n\tEnter '-help to a list of available commands" +
+            "\n\tor enter '-c' to connect...");
+    public StringBuilder menu = new StringBuilder("THIS IS THE MENU:" +
+            "\n\t-help\tprints help menu" +
+            "\n\t-c\t\tconnects SFTP server" +
+            "\n\t\tlsr\t\t\t\tlists contents of current remote directory" +
+            "\n\t\tlsl\t\t\t\tlists contents of current local directory" +
+            "\n\t\tpwdr\t\t\tprints remote working directory" +
+            "\n\t\tpwdl\t\t\tprints local working directory" +
+            "\n\t\tdl <fileName>\tdownload <fileName> from current remote directory to current local directory" +
+            "\n\t\tul <fileName>\tupload <fileName> to current remote directory from current local directory" +
+            "\n\t-d\t\tdisconnects SFTP server" +
+            "\n\t-q\t\tquit SFTP client interface" +
+            "\n\n\tmore menu options coming soon...");
 
 
 
 
-    CommandLineInterface(boolean getUsernameAndPassword){
-        if (getUsernameAndPassword){
-            Scanner input = new Scanner(System.in);
-            System.out.println("Username: ");
-            userName = input.nextLine();
-            System.out.println("Password: ");
-            password = input.nextLine();
+    CommandLineInterface(){}
 
-            input.close();
+
+    public static void main(String ... args){
+
+        // instantiate new CLI object
+        CommandLineInterface mainCLI = new CommandLineInterface();
+        System.out.println(mainCLI.getGreeting());  // prints greeting
+
+        // retrieves command option from System.in
+        mainCLI.setCommand();
+
+        while (true){
+            mainCLI.ftpClientManager(mainCLI.getCommand());
         }
 
-    }
 
+
+
+    }
 
 
     public void ftpClientManager(String command){
 
         switch(command){
-            case ("-m"):
-                displayMenu();
+            case ("-help"):
+                System.out.println(getMenu());
+                setCommand();
                 break;
-            case ("-u"):
-                System.out.println("runs FTPUploader");
+            case ("-c"):
+                setUserNameAndPassword();
+                ourConnection = new SFTPConnection(getUsername(), HOST, getPassword());
+                ourConnection.connect();
+                if (!ourConnection.isConnected()){
+                    System.out.println("Failed to connect, please try again.");
+                    setCommand();
+                    break;
+                }
+                else{
+                    System.out.println("Connection successful! Enjoy your files, stupid.");
+                    setCommand();
+                    break;
+                }
+            case("-d"):
+                if(ourConnection != null && ourConnection.isConnected()){
+                    ourConnection.disconnect();
+                    System.out.println("Connection disconnected, enter '-q' to quit or '-help' to see available options\n");
+                    setCommand();
+                    break;
+                }
+                else{
+                    System.out.println("No connection to disconnect. Enter '-c' to connect, '-q' to quit, or '-help' to see available options\n");
+                    setCommand();
+                    break;
+                }
+
+            case("-q"):
+                System.out.println("Goodbye!");
+                System.exit(0);
                 break;
             default:
-                displayMenu();
+                System.out.println("Unknown command. Enter '-help' for list of available commands or '-q' to exit.");
                 break;
         }
     }
 
-    public void displayMenu(){
-        System.out.println(this.menu);
+    public String getMenu(){
+        return menu.toString();
     }
 
     public void setCommand(){
-        Scanner getCommand = new Scanner(System.in);
-        command = getCommand.nextLine();
-        getCommand.close();
+        System.out.printf("> ");
+        Scanner input = new Scanner(System.in);
+        command = input.nextLine();
+        // input.close();
     }
 
     public String getCommand(){
-        return this.command;
+        return command;
+    }
+
+    public String getGreeting(){
+        return greeting.toString();
+    }
+
+    public void setUserNameAndPassword(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Username: ");
+        userName = input.nextLine();
+        System.out.println("Password: ");
+        password = input.nextLine();
+
+    }
+
+    public String getUsername(){
+        return userName;
+    }
+
+    public String getPassword(){
+        return password;
     }
 
 }

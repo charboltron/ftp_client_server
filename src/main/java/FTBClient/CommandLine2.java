@@ -2,8 +2,6 @@ package FTBClient;
 
 import com.jcraft.jsch.*;
 
-import javax.swing.text.html.Option;
-import java.io.*;
 //import java.lang.invoke.DirectMethodHandle$Holder;
 import java.util.*;
 
@@ -43,7 +41,7 @@ public class CommandLine2 {
         SFTPConnection sftpConnection = new SFTPConnection(user,host,pwd);
         System.out.println(sftpConnection.username+ " is attempting to connect to "+sftpConnection.host);
 
-        sftpConnection.Connect();
+        sftpConnection.connect();
 
         try {
             Options.run(sftpConnection.sftpChannel);
@@ -52,7 +50,7 @@ public class CommandLine2 {
             System.exit(0);
         }
 
-        sftpConnection.Disconnect();
+        sftpConnection.disconnect();
         System.out.println("Connection Closed. Open a new connection (c) or quit? (q):  ");
     }
 }

@@ -49,22 +49,22 @@ public class CLITests {
 
     @Test
     public void displayMenuPrintsMenu(){
-        String menu = String.join("\n", "Welcome to the FTP Client Interface"
-                , "\n\tThe following is a list of available commands:"
-                , "\t-m :\tPrint menu options"
-                , "\t-u :\tUpload a file to current directory"
-                , "\tMORE MENU OPTIONS COMING\n");
-        boolean getUsernameAndPasswordIsFalse = false;
-        CommandLineInterface test = new CommandLineInterface(getUsernameAndPasswordIsFalse);
-        test.displayMenu();
-        assertThat(outContent.toString(), equalTo(menu));
+        String menu = "THIS IS THE MENU:" +
+                "\n\t-help\t\tprints help menu" +
+                "\n\t-c\t\tconnects SFTP server" +
+                "\n\t-q\t\tquit SFTP client interface" +
+                "\n\n\tmore menu options coming soon...";
+
+        CommandLineInterface test = new CommandLineInterface();
+
+        assertThat(test.getMenu(), equalTo(menu));
     }
 
     @Test
     public void clientManagerDefaultsToDisplayMenu(){
         final String command = "";
-        boolean getUsernameAndPasswordIsFalse = false;
-        CommandLineInterface test = new CommandLineInterface(getUsernameAndPasswordIsFalse);
+
+        CommandLineInterface test = new CommandLineInterface();
 
         test.ftpClientManager(command);
 
@@ -75,8 +75,8 @@ public class CLITests {
     @Test
     public void clientManagerReturnsMenuWithMenuFlag(){
         final String command = "-m";
-        boolean getUsernameAndPasswordIsFalse = false;
-        CommandLineInterface test = new CommandLineInterface(getUsernameAndPasswordIsFalse);
+
+        CommandLineInterface test = new CommandLineInterface();
 
         test.ftpClientManager(command);
 
@@ -87,8 +87,7 @@ public class CLITests {
     @Test
     public void clientManagerReturnsUploaderTempWithMenuFlag(){
         final String command = "-u";
-        boolean getUsernameAndPasswordIsFalse = false;
-        CommandLineInterface test = new CommandLineInterface(getUsernameAndPasswordIsFalse);
+        CommandLineInterface test = new CommandLineInterface();
 
         test.ftpClientManager(command);
 
@@ -97,11 +96,30 @@ public class CLITests {
 
     @Test
     public void setCommandSetsCommand(){
-        CommandLineInterface test = new CommandLineInterface(false);
+        CommandLineInterface test = new CommandLineInterface();
         provideInput("-m");
         test.setCommand();
 
         assertThat(test.getCommand(), equalTo("-m"));
+
+    }
+
+    @Test
+    public void getGreetingReturnsGreetingMessage(){
+        String greeting = "Welcome to the FTP Client interface." +
+                "\n\tEnter '-help to a list of available commands" +
+                "\n\tor enter '-c' to connect...";
+        CommandLineInterface test = new CommandLineInterface();
+        assertThat(test.getGreeting(), equalTo(greeting));
+    }
+
+    @Test
+    public void setUserNameAndPasswordSetsUsernameAndPassword(){
+        CommandLineInterface test = new CommandLineInterface();
+        provideInput("username\npassword");
+        test.setUserNameAndPassword();
+        assertThat(test.getUsername(), equalTo("username"));
+        assertThat(test.getPassword(), equalTo("password"));
 
     }
 
