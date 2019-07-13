@@ -27,7 +27,6 @@ public class CommandLineInterface {
             input.close();
         }
 
-
     }
 
 

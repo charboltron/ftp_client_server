@@ -7,40 +7,11 @@ import java.util.*;
 /**
  * * @param args
  */
-public class ListFiles {
+public class Options {
 
-    public static void main(String[] args) throws SftpException {
-        Scanner scanner = new Scanner(System.in);  // Reading from System.in
-        Console console = null;
+    public static void run(ChannelSftp sftpChannel) throws SftpException {
 
-        System.out.println("Enter your username: ");
-        String user = scanner.nextLine(); // Scans the next token of the input as an int once finished
-        System.out.println(("Enter a hostname: "));
-        String host = scanner.nextLine();
-        System.out.println("Enter your password (It will not be masked!): ");
-        String pwd = scanner.nextLine();
-        int port = 22;
-        //text file in my directory
-
-        Session session = null;
-        ChannelSftp sftpChannel = null;
-
-        try {
-            JSch jsch = new JSch(); //Creates a class object of JSch which allows us to access a server over sftp
-            session = jsch.getSession(user, host, port); //returns a session object
-            session.setPassword(pwd);
-            session.setConfig("StrictHostKeyChecking", "no"); //may want to investigate this
-            System.out.println("Establishing Connection with " + host + "...");
-            session.connect();
-            System.out.println("Connection established!");
-            System.out.println("Creating SFTP Channel...");
-            sftpChannel = (ChannelSftp) session.openChannel("sftp");
-            sftpChannel.connect();
-            System.out.println("SFTP Channel created!");
-
-        } catch (JSchException e) {
-            System.out.println(e);
-        }
+        Scanner scanner = new Scanner(System.in);
 
         while (true) {
             //cd lets you enter a directory. ls lists the files in that directory, and open will open a file
@@ -64,9 +35,6 @@ public class ListFiles {
                 continue;
             }
         }
-        scanner.close();
-        sftpChannel.disconnect();
-        session.disconnect();
     }
 
     private static void changeDirectory(ChannelSftp sftpChannel, Scanner scanner) throws SftpException {
