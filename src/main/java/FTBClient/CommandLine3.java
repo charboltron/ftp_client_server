@@ -21,10 +21,10 @@ public class CommandLine3 {
                 makeConnection();
             }else {break;}
         }
-
+        scanner.close();
     }
 
-    public static void makeConnection(){
+    private static void makeConnection(){
 
 
         //hard-coded for now
@@ -37,7 +37,7 @@ public class CommandLine3 {
         //String host = scanner.nextLine();
 
         System.out.println("Enter your password (It will not be masked!): ");
-        String pwd = "Enter your password";
+        String pwd = "Enter the Password here";
         //String pwd = scanner.nextLine();
 
         SFTPConnection sftpConnection = new SFTPConnection(user,host,pwd);
@@ -45,11 +45,10 @@ public class CommandLine3 {
 
         sftpConnection.Connect();
 
-        Options options = new Options();
         try {
-            options.run(sftpConnection.sftpChannel);
+            Options.run(sftpConnection.sftpChannel);
         }catch(SftpException e){
-            System.err.println(e);
+            System.out.println(e.getMessage());
             System.exit(0);
         }
 
