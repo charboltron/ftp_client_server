@@ -26,16 +26,18 @@ public class CommandLine2 {
 
     public static void makeConnection(){
 
+
+        //hard-coded for now
         System.out.println("Enter your username: ");
-        String user = "boltch";
+        String user = "agilesftp";
         //String user = scanner.nextLine(); // Scans the next token of the input as an int once finished
 
         System.out.println(("Enter a hostname: "));
-        String host = "linux.cecs.pdx.edu";
+        String host = "104.248.67.51";
         //String host = scanner.nextLine();
 
         System.out.println("Enter your password (It will not be masked!): ");
-        String pwd = "RpawkDZNT6ors2ZT";
+        String pwd = "Enter your password";
         //String pwd = scanner.nextLine();
 
         SFTPConnection sftpConnection = new SFTPConnection(user,host,pwd);
