@@ -1,8 +1,10 @@
 package FTBClient;
 
 import com.jcraft.jsch.SftpException;
+
 import java.util.Scanner;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 //import java.lang.invoke.DirectMethodHandle$Holder;
@@ -10,8 +12,13 @@ import java.util.logging.Logger;
 public class CommandLine {
 
     private static final Logger LOGGER = Logger.getLogger("CommandLine2");
+    private static boolean disableLogging = true;
 
     public static void main(String[] args){
+
+        if(disableLogging) {//This is currently manual but can be triggered from anywhere so maybe if you log in as dev it does this or something
+            LogManager.getLogManager().reset();
+        }
 
         LOGGER.log(Level.INFO, "Starting Command Line");
         Scanner scanner = new Scanner(System.in);  // Reading from System.in
