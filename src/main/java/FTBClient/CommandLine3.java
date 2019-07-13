@@ -7,7 +7,7 @@ import java.io.*;
 //import java.lang.invoke.DirectMethodHandle$Holder;
 import java.util.*;
 
-public class CommandLine2 {
+public class CommandLine3 {
 
     public static void main(String[] args){
 
