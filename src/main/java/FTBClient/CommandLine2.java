@@ -37,22 +37,30 @@ public class CommandLine2 {
         //String host = scanner.nextLine();
 
         System.out.println("Enter your password (It will not be masked!): ");
-        String pwd = "Enter the Password here";
+        String pwd = "totsReal"; 
         //String pwd = scanner.nextLine();
 
         SFTPConnection sftpConnection = new SFTPConnection(user,host,pwd);
         System.out.println(sftpConnection.username+ " is attempting to connect to "+sftpConnection.host);
 
-        sftpConnection.Connect();
+           boolean connected = sftpConnection.Connect();
 
-        try {
-            Options.run(sftpConnection.sftpChannel);
-        }catch(SftpException e){
-            System.out.println(e.getMessage());
-            System.exit(0);
-        }
+            if(connected){
+                try {
+                    Options.run(sftpConnection.sftpChannel);
+                } catch (SftpException e) {
+                    System.out.println(e.getMessage());
+                    System.exit(0);
+                }
+                sftpConnection.Disconnect();
+                System.out.println("Connection Closed. Open a new connection (c) or quit? (q):  ");
 
-        sftpConnection.Disconnect();
-        System.out.println("Connection Closed. Open a new connection (c) or quit? (q):  ");
+            }else{
+
+                System.out.println("Connection failed. Open a new connection (c) or quit? (q):  ");
+            }
+
+
+
     }
 }

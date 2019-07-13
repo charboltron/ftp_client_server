@@ -9,5 +9,8 @@
         <module name="FTBClient" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="FTBClient" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

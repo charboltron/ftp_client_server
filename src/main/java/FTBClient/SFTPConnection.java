@@ -3,6 +3,7 @@ package FTBClient;
 import com.jcraft.jsch.*;
 import java.io.*;
 //import java.lang.invoke.DirectMethodHandle$Holder;
+import java.nio.channels.NotYetConnectedException;
 import java.util.*;
 
 public class SFTPConnection {
@@ -20,7 +21,7 @@ public class SFTPConnection {
         this.pwd = pwd;
     }
 
-    public void Connect(){
+    public boolean Connect() {
 
         try {
             JSch jsch = new JSch(); //Creates a class object of JSch which allows us to access a server over sftp
@@ -36,14 +37,19 @@ public class SFTPConnection {
             System.out.println("SFTP Channel created!");
             connected = true;
 
+
         } catch (JSchException e) {
-            System.out.println(e);
+            System.out.println("Failure to connect: "+e);
+            connected = false;
+
         }
+        return connected;
+
 
     }
 
     public void Disconnect(){
-
+        System.out.println(sftpChannel.isConnected());
         sftpChannel.disconnect();
         session.disconnect();
         connected = false;

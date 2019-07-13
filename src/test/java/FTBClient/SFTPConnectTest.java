@@ -11,7 +11,10 @@ public class SFTPConnectTest {
     public void testConnection(){
 
         SFTPConnection s = new SFTPConnection("agilesftp", "104.248.67.51", "SimpleAndSecureFileTransferProtocol");
-        s.Connect();
+
+            s.Connect();
+
+
         assertThat(s.isConnected(), equalTo(true));
         s.Disconnect();
         assertThat(s.isConnected(), equalTo(false));
