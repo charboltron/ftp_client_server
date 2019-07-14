@@ -1,5 +1,7 @@
 package FTBClient;
 
+import com.jcraft.jsch.SftpException;
+
 import java.util.Scanner;
 
 public class CommandLineInterface {
@@ -43,6 +45,9 @@ public class CommandLineInterface {
         mainCLI.setCommand();
 
         while (true){
+//            if (mainCLI.ourConnection.isConnected()){
+//                //TODO: refactor CLI use of optionsManager 'while-loop' into its own method for re-use here
+//            }
             mainCLI.ftpClientManager(mainCLI.getCommand());
         }
 
@@ -68,9 +73,32 @@ public class CommandLineInterface {
                     setCommand();
                     break;
                 }
+                // TODO: re-enter options manager if '-help' received after successful '-c' connection. Might need to restructure location of optionsManager
                 else{
                     System.out.println("Connection successful! Enjoy your files, stupid.");
                     setCommand();
+                    while(true){
+                        if(getCommand().charAt(0) == '-'){
+                            break; //break while loop for non-SFTP client commands (i.e. '-q', '-help')
+                        }
+                        try{
+                            ourConnection.optionsManager(getCommand()); // if command doesn't throw sftp exception, executes SFTP navigation commands in SFTP optionsManager method
+
+                        }
+                        catch(SftpException shit){ // if SftpException thrown, print exception, followed by help message, then retrieve new command after disconnecting from SFTP server
+                            System.err.println(shit.getMessage());
+                            if(ourConnection.isConnected()){
+                                ourConnection.disconnect();
+                            }
+                            System.out.println("Connection failed... enter '-c' to reconnect, '-q' to quit', or '-help' a list of available options\n");
+                            setCommand();
+                            break; //break while loop with new command
+                        }
+
+                        setCommand();
+
+
+                    }
                     break;
                 }
             case("-d"):
@@ -92,6 +120,7 @@ public class CommandLineInterface {
                 break;
             default:
                 System.out.println("Unknown command. Enter '-help' for list of available commands or '-q' to exit.");
+                setCommand();
                 break;
         }
     }

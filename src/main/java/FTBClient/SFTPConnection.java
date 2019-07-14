@@ -1,6 +1,9 @@
 package FTBClient;
 
 import com.jcraft.jsch.*;
+
+import java.sql.SQLOutput;
+import java.util.Scanner;
 //import java.lang.invoke.DirectMethodHandle$Holder;
 
 
@@ -50,5 +53,39 @@ public class SFTPConnection {
 
     public boolean isConnected(){
         return connected;
+    }
+
+    public void optionsManager(String option) throws SftpException{
+
+        switch (option){
+            case ("pwdr"):
+                System.out.println(sftpChannel.pwd());
+                break;
+            case("pwdl"):
+                System.out.println(sftpChannel.lpwd());
+                break;
+            case("print"):
+                Options.printFile(sftpChannel);
+                break;
+            case ("lsr"):
+                Options.listFiles(sftpChannel);
+                break;
+            case("cd"):
+                Options.changeDirectory(sftpChannel);
+                break;
+            case("lsl"):
+                System.out.println("Unimplemented method: List Files.");
+                break;
+            case("ul"):
+                System.out.println("Unimplemented method: Upload file to remote.");
+                break;
+            case("dl"):
+                System.out.println("Unimplemented method: Download file from remote");
+                break;
+            default:
+                System.out.println("Command not recognized, enter '-help' for a list of available options");
+                break;
+
+        }
     }
 }

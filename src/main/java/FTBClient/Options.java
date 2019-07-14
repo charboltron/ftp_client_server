@@ -9,42 +9,18 @@ import java.util.*;
  */
 public class Options {
 
-    public static void run(ChannelSftp sftpChannel) throws SftpException {
+
+    public static void changeDirectory(ChannelSftp sftpChannel) throws SftpException {
 
         Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            //cd lets you enter a directory. ls lists the files in that directory, and open will open a file
-            //in current working directory.
-            System.out.println("What do you want to do? (pwdr) (pwdl) (cd) (ls) (print) (q)");
-            String choice = scanner.nextLine();
-            if (choice.equals("cd")) {
-                changeDirectory(sftpChannel, scanner);
-            } else if (choice.equals("ls")) { //works
-                listFiles(sftpChannel);
-            } else if (choice.equals("print")){ //works
-                printFile(sftpChannel, scanner);
-            } else if (choice.equals("pwdr")) {
-                System.out.println(sftpChannel.pwd());
-            } else if (choice.equals("pwdl")) {
-                System.out.println(sftpChannel.lpwd());
-            } else if(choice.equals("q")){
-                break;
-            }
-            else {
-                continue;
-            }
-        }
-    }
-
-    private static void changeDirectory(ChannelSftp sftpChannel, Scanner scanner) throws SftpException {
         System.out.println("Enter directory name: ");
         String directoryPath = scanner.nextLine();
         sftpChannel.cd(directoryPath);
     }
 
-    private static void printFile(ChannelSftp sftpChannel, Scanner scanner) throws SftpException {
+    public static void printFile(ChannelSftp sftpChannel) throws SftpException {
 
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the file you want to see:");
         String remoteFile = scanner.nextLine();
         try {
@@ -62,7 +38,7 @@ public class Options {
         }
     }
 
-    private static void listFiles(ChannelSftp sftpChannel) {
+    public static void listFiles(ChannelSftp sftpChannel) {
         try {
             String workingDir = sftpChannel.pwd();
             Vector fileList = sftpChannel.ls(workingDir);
