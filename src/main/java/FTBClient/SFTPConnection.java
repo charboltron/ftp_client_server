@@ -74,7 +74,7 @@ public class SFTPConnection {
                 Options.changeDirectory(sftpChannel);
                 break;
             case("lsl"):
-                System.out.println("Unimplemented method: List Files.");
+                Options.listLocalFiles();
                 break;
             case("ul"):
                 System.out.println("Unimplemented method: Upload file to remote.");

@@ -49,5 +49,20 @@ public class Options {
             System.out.println(e);
         }
     }
+
+    public static void listLocalFiles() {
+            File curDir = new File(".");
+
+            File[] files = curDir.listFiles();
+
+
+            for(File f : files) {
+                if (f.isDirectory())
+                    System.out.println(f.getName());
+                if (f.isFile()) {
+                    System.out.println(f.getName());
+                }
+            }
+    }
 }
 
