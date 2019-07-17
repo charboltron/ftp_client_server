@@ -2,7 +2,6 @@ package FTBClient;
 
 import com.jcraft.jsch.*;
 
-import java.sql.SQLOutput;
 import java.util.Scanner;
 //import java.lang.invoke.DirectMethodHandle$Holder;
 
@@ -74,7 +73,8 @@ public class SFTPConnection {
                 Options.changeDirectory(sftpChannel);
                 break;
             case("lsl"):
-                System.out.println("Unimplemented method: List Files.");
+                //Options.listLocalFiles();
+                //System.out.println("Unimplemented method: List Files.");
                 break;
             case("ul"):
                 System.out.println("Unimplemented method: Upload file to remote.");
