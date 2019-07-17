@@ -1,9 +1,8 @@
-package FTBClient;
+package SFTPClient;
 
 import com.jcraft.jsch.*;
 
 import java.io.IOException;
-import java.util.Scanner;
 //import java.lang.invoke.DirectMethodHandle$Holder;
 
 
@@ -65,25 +64,20 @@ public class SFTPConnection {
                 System.out.println(sftpChannel.lpwd());
                 break;
             case("print"):
-                Options.printFile(sftpChannel);
+                Commands.printFile(sftpChannel);
                 break;
             case ("lsr"):
-                Options.listFiles(sftpChannel);
+                Commands.listFiles(sftpChannel);
                 break;
             case("cd"):
-                Options.changeDirectory(sftpChannel);
+                Commands.changeDirectory(sftpChannel);
                 break;
             case("lsl"):
-                Options.listLocalFiles(sftpChannel);
+                //Commands.listLocalFiles(sftpChannel);
                 //System.out.println("Unimplemented method: List Files.");
                 break;
             case("ul"):
-                //System.out.println("Unimplemented method: Upload file to remote.");
-                try{
-                    Options.uploadFiles(sftpChannel);
-                } catch (IOException e) {
-                System.err.println("Unable to find input file");
-            }
+                Commands.uploadFiles(sftpChannel);
                 break;
             case("dl"):
                 System.out.println("Unimplemented method: Download file from remote");

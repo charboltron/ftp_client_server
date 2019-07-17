@@ -1,4 +1,4 @@
-package FTBClient;
+package SFTPClient;
 
 import static org.junit.Assert.assertTrue;
 

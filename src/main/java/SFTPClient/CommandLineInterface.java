@@ -1,4 +1,4 @@
-package FTBClient;
+package SFTPClient;
 
 import com.jcraft.jsch.SftpException;
 

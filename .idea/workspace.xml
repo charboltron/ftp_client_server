@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4b5bd319-4e22-491c-8b14-7cf423a0f2e0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/ftp_client_server.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/FTBClient/CommandLine2.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/FTBClient/FTPUploader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/FTBClient/Options.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/FTBClient/Options.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/FTBClient/SFTPConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/FTBClient/SFTPConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/FTBClient.AppTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/FTBClient.AppTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/FTBClient.SFTPConnectTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/FTBClient.SFTPConnectTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-FTBClient.AppTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-FTBClient.AppTest.xml" afterDir="false" />
+    <list default="true" id="4b5bd319-4e22-491c-8b14-7cf423a0f2e0" name="Default Changelist" comment="Changed the names of FTBClient to SFTPClient and changed Options class&#10;to Commands.">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/FTBClient/CommandLineInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SFTPClient/CommandLineInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/FTBClient/Options.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SFTPClient/Commands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/FTBClient/SFTPConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SFTPClient/SFTPConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/FTBClient/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/SFTPClient/AppTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/FTBClient/CLITests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/SFTPClient/CLITests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/FTBClient/SFTPConnectTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/SFTPClient/SFTPConnectTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -28,7 +27,7 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/FTBClient/CommandLineInterface.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/SFTPClient/CommandLineInterface.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="308">
               <caret line="163" column="1" selection-start-line="163" selection-start-column="1" selection-end-line="163" selection-end-column="1" />
@@ -37,19 +36,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/FTBClient/SFTPConnection.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/SFTPClient/SFTPConnection.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="132">
-              <caret line="72" column="23" lean-forward="true" selection-start-line="72" selection-start-column="23" selection-end-line="72" selection-end-column="23" />
+            <state relative-caret-position="282">
+              <caret line="79" column="50" selection-start-line="79" selection-start-column="50" selection-end-line="79" selection-end-column="50" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/FTBClient/Options.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/SFTPClient/Commands.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="71" column="62" selection-start-line="71" selection-start-column="62" selection-end-line="71" selection-end-column="62" />
+            <state relative-caret-position="203">
+              <caret line="61" column="5" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -58,7 +57,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/FTBClient/AppTest.java">
+        <entry file="file://$PROJECT_DIR$/src/test/java/SFTPClient/AppTest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="105">
               <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
@@ -67,7 +66,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/FTBClient/CLITests.java">
+        <entry file="file://$PROJECT_DIR$/src/test/java/SFTPClient/CLITests.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="210">
               <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
@@ -76,10 +75,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/FTBClient/SFTPConnectTest.java">
+        <entry file="file://$PROJECT_DIR$/src/test/java/SFTPClient/SFTPConnectTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+            <state relative-caret-position="30">
+              <caret line="2" column="8" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -94,6 +93,9 @@
       <list>
         <option value="$PROJECT_DIR$/src/main/java/FTBClient/SFTPConnection.java" />
         <option value="$PROJECT_DIR$/src/main/java/FTBClient/Options.java" />
+        <option value="$PROJECT_DIR$/src/main/java/SFTPClient/Options.java" />
+        <option value="$PROJECT_DIR$/src/main/java/SFTPClient/SFTPConnection.java" />
+        <option value="$PROJECT_DIR$/src/main/java/SFTPClient/Commands.java" />
       </list>
     </option>
   </component>
@@ -141,7 +143,7 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="FTBClient" type="462c0819:PsiDirectoryNode" />
+              <item name="SFTPClient" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ftp_client_server" type="b2602c69:ProjectViewProjectNode" />
@@ -162,7 +164,7 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="FTBClient" type="462c0819:PsiDirectoryNode" />
+              <item name="SFTPClient" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -189,11 +191,11 @@
   </component>
   <component name="RunManager" selected="Application.CommandLineInterface">
     <configuration name="CommandLineInterface" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="FTBClient.CommandLineInterface" />
+      <option name="MAIN_CLASS_NAME" value="SFTPClient.CommandLineInterface" />
       <module name="ftp_client_server" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="FTBClient.*" />
+          <option name="PATTERN" value="SFTPClient.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -205,12 +207,12 @@
       <module name="ftp_client_server" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="FTBClient.*" />
+          <option name="PATTERN" value="SFTPClient.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="FTBClient.AppTest" />
+      <option name="PACKAGE_NAME" value="SFTPClient" />
+      <option name="MAIN_CLASS_NAME" value="SFTPClient.AppTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -233,7 +235,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1563327588337</updated>
-      <workItem from="1563327599991" duration="5296000" />
+      <workItem from="1563327599991" duration="6389000" />
     </task>
     <servers />
   </component>
@@ -258,7 +260,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5296000" />
+    <option name="totallyTimeSpent" value="6389000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1368" height="741" extended-state="6" />
@@ -270,15 +272,15 @@
       <window_info id="Favorites" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Messages" weight="0.3294702" />
+      <window_info active="true" anchor="bottom" id="Messages" visible="true" weight="0.3294702" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Terminal" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3294702" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3294702" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3294702" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -296,6 +298,10 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Changed the names of FTBClient to SFTPClient and changed Options class&#10;to Commands." />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed the names of FTBClient to SFTPClient and changed Options class&#10;to Commands." />
   </component>
   <component name="editorHistoryManager">
     <entry file="jar://$USER_HOME$/jdk-12.0.1/lib/src.zip!/java.base/java/lang/ClassLoader.java">
@@ -330,45 +336,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/FTBClient/AppTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/FTBClient/SFTPConnectTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/FTBClient/CLITests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/FTBClient/CommandLineInterface.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/SFTPClient/CommandLineInterface.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="308">
           <caret line="163" column="1" selection-start-line="163" selection-start-column="1" selection-end-line="163" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/FTBClient/SFTPConnection.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/SFTPClient/AppTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="72" column="23" lean-forward="true" selection-start-line="72" selection-start-column="23" selection-end-line="72" selection-end-column="23" />
+        <state relative-caret-position="105">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/FTBClient/Options.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/SFTPClient/SFTPConnection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="71" column="62" selection-start-line="71" selection-start-column="62" selection-end-line="71" selection-end-column="62" />
+        <state relative-caret-position="282">
+          <caret line="79" column="50" selection-start-line="79" selection-start-column="50" selection-end-line="79" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/SFTPClient/CLITests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/SFTPClient/SFTPConnectTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="8" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/SFTPClient/Commands.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="61" column="5" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
