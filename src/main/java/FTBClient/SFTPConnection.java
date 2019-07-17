@@ -2,6 +2,7 @@ package FTBClient;
 
 import com.jcraft.jsch.*;
 
+import java.io.IOException;
 import java.util.Scanner;
 //import java.lang.invoke.DirectMethodHandle$Holder;
 
@@ -73,11 +74,16 @@ public class SFTPConnection {
                 Options.changeDirectory(sftpChannel);
                 break;
             case("lsl"):
-                //Options.listLocalFiles();
+                Options.listLocalFiles(sftpChannel);
                 //System.out.println("Unimplemented method: List Files.");
                 break;
             case("ul"):
-                System.out.println("Unimplemented method: Upload file to remote.");
+                //System.out.println("Unimplemented method: Upload file to remote.");
+                try{
+                    Options.uploadFiles(sftpChannel);
+                } catch (IOException e) {
+                System.err.println("Unable to find input file");
+            }
                 break;
             case("dl"):
                 System.out.println("Unimplemented method: Download file from remote");

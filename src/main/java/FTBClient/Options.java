@@ -49,5 +49,14 @@ public class Options {
             System.out.println(e);
         }
     }
+    
+    public static void uploadFiles(ChannelSftp sftpChannel) throws IOException, SftpException{
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the file you want to upload: ");
+        String path = scanner.nextLine();
+        System.out.println(sftpChannel.lpwd() + "/" + path);
+        FileInputStream source = new FileInputStream(sftpChannel.lpwd() + "/" + path);
+        sftpChannel.put(source, sftpChannel.pwd() + "/" + path);
+    }
 }
 
