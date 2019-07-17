@@ -19,6 +19,12 @@
   </properties>
 
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/com.jcraft/jsch -->
+    <dependency>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch</artifactId>
+      <version>0.1.55</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -56,8 +62,17 @@
           <version>2.22.1</version>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
+          <configuration>
+            <archive>
+              <index>true</index>
+              <manifest>
+                <mainClass>FTBClient.CommandLineInterface</mainClass>
+              </manifest>
+            </archive>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
