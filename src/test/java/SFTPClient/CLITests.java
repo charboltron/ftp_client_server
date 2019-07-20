@@ -1,4 +1,4 @@
-//package FTBClient;
+//package SFTPClient;
 //
 //import static org.hamcrest.CoreMatchers.equalTo;
 //import static org.hamcrest.MatcherAssert.assertThat;

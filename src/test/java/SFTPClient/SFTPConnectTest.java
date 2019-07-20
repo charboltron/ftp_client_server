@@ -1,4 +1,4 @@
-package FTBClient;
+package SFTPClient;
 
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;

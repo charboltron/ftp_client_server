@@ -1,4 +1,4 @@
-package FTBClient;
+package SFTPClient;
 
 import com.jcraft.jsch.*;
 import java.io.*;
@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * * @param args
  */
-public class Options {
+public class Commands {
 
 
     public static void changeDirectory(ChannelSftp sftpChannel) throws SftpException {
@@ -47,6 +47,18 @@ public class Options {
             }
         } catch (SftpException e) {
             System.out.println(e);
+        }
+    }
+
+    public static void uploadFiles(ChannelSftp sftpChannel) throws SftpException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the file you want to upload: ");
+        String path = scanner.nextLine();
+        try {
+            FileInputStream source = new FileInputStream(sftpChannel.lpwd() + "/" + path);
+            sftpChannel.put(source, sftpChannel.pwd() + "/" + path);
+        } catch (IOException e) {
+            System.err.println("Unable to find input file");
         }
     }
 }
