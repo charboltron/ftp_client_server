@@ -3,6 +3,8 @@ package SFTPClient;
 import com.jcraft.jsch.SftpException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class CommandLineInterface {
@@ -10,7 +12,11 @@ public class CommandLineInterface {
     private String command;
     private String userName;
     private String password;
-    private final String HOST = "104.248.67.51";
+    private final String HOST = "104.248.67.51"; //Hard-coded for now
+
+    ArrayList<String> connectionCommands = new ArrayList<String> (Arrays.asList(
+           "dirs", "lsr","lsr -al", "lsl", "cdr", "cdl", "pwdr", "mkdirr", "chmodr", "dl", "ul"));
+
 
     public SFTPConnection ourConnection;
 
@@ -20,13 +26,17 @@ public class CommandLineInterface {
     public StringBuilder menu = new StringBuilder("THIS IS THE MENU:" +
             "\n\t-help\tprints help menu" +
             "\n\t-c\t\tconnects SFTP server" +
+            "\n\t\tdirs\t\t\tprints both local and remote working directories"+
             "\n\t\tlsr\t\t\t\tlists contents of current remote directory" +
             "\n\t\tlsr -al\t\t\tlists contents of current remote directory with permissions" +
             "\n\t\tlsl\t\t\t\tlists contents of current local directory" +
             "\n\t\tcdr\t\t\t\tchange remote directory" +
             "\n\t\tcdl\t\t\t\tchange local directory" +
+            "\n\t\tmvr\t\t\t\trename or move a file or directory on remote server" +
             "\n\t\tpwdr\t\t\tprints remote working directory" +
             "\n\t\tpwdl\t\t\tprints local working directory" +
+            "\n\t\tmkdirr\t\t\tmake directory on remote server" +
+            "\n\t\tchmodr\t\t\tchange remote file permissions" +
             "\n\t\tdl\t\t\t\tdownload from current remote directory to current local directory" +
             "\n\t\tul\t\t\t\tupload to current remote directory from current local directory" +
             "\n\t-d\t\tdisconnects SFTP server" +
@@ -109,7 +119,9 @@ public class CommandLineInterface {
                 System.exit(0);
                 break;
             default:
-                System.out.println("Unknown command. Enter '-help' for list of available commands or '-q' to exit.");
+                if (connectionCommands.contains(getCommand())) {
+                    System.out.println("You need to make a connection before you can use this command. Please type -c.");
+                } else { System.out.println("Unknown command. Enter '-help' for list of available commands or '-q' to exit.");}
                 setCommand();
                 break;
         }

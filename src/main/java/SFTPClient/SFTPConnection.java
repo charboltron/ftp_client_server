@@ -59,6 +59,10 @@ public class SFTPConnection {
     public void commandsManager(String command) throws SftpException, IOException {
 
         switch (command){
+            case ("dirs"):
+                System.out.println("Remote directory: "+sftpChannel.pwd());
+                System.out.println("Local  directory: "+cmd.curDir);
+                break;
             case ("pwdr"):
                 System.out.println(sftpChannel.pwd());
                 break;
@@ -86,8 +90,16 @@ public class SFTPConnection {
             case("lsl"):
                 cmd.listLocalFiles(sftpChannel);
                 break;
+            case("mkdirr"):
+                cmd.makeRemoteDirectory(sftpChannel);
+                break;
+            case("chmodr"):
+                cmd.changeRemotePermissions(sftpChannel);
+                break;
+            case("mvr"):
+                cmd.renameRemoteFile(sftpChannel);
+                break;
             case("ul"):
-                System.out.println("##");
                 cmd.uploadFiles(sftpChannel);
                 break;
             case("dl"):
