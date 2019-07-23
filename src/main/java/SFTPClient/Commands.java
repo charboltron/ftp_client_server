@@ -192,13 +192,13 @@ public class Commands {
             System.out.println("An error occurred while trying to get the remote file.");
             return;
         }
-        System.out.println("Enter the path to save the file as (relative to current directory): ");
+        System.out.println("Enter the path to save the file as: ");
         String writePath = scanner.nextLine().trim();
         if (writePath.equals("")) {
             System.out.println("Can't have an empty filename!");
             return;
         }
-        File writeFile = new File(writePath);
+        File writeFile = new File(this.currentLocalPath + File.separator + writePath);
         OutputStream fileOut = null;
         try {
             fileOut = new FileOutputStream(writeFile);
