@@ -77,7 +77,7 @@ public class Options {
         try {
             String workingDir = sftpChannel.pwd();
             Vector fileList = sftpChannel.ls(workingDir);
-            LOGGER.log(Level.INFO,"Listing filess from "+workingDir);
+            LOGGER.log(Level.INFO,"Listing files from "+workingDir);
             for (int i = 0; i < fileList.size(); i++) {
                 System.out.println(fileList.get(i).toString());
             }

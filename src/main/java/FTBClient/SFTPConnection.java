@@ -20,7 +20,7 @@ public class SFTPConnection {
     boolean connected = false;
 
     SFTPConnection(String username, String host, String pwd){
-
+        LOGGER.log(Level.INFO, "Creating SFTP object");
         this.username = username;
         this.host = host;
         this.pwd = pwd;
