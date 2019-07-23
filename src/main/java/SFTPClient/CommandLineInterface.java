@@ -38,6 +38,7 @@ public class CommandLineInterface {
             "\n\t\tpwdl\t\t\tprints local working directory" +
             "\n\t\tmkdirr\t\t\tmake directory on remote server" +
             "\n\t\trmdirr\t\t\tdelete directory on remote server" +
+            "\n\t\trmr\t\t\tdelete file on remote server" +
             "\n\t\tchmodr\t\t\tchange remote file permissions" +
             "\n\t\tdl\t\t\t\tdownload from current remote directory to current local directory" +
             "\n\t\tul\t\t\t\tupload to current remote directory from current local directory" +

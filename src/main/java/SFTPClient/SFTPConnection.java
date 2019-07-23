@@ -96,6 +96,9 @@ public class SFTPConnection {
             case("rmdirr"):
                 cmd.removeRemoteDirectory(sftpChannel);
                 break;
+            case("rmr"):
+                cmd.removeRemoteFile(sftpChannel);
+                break;
             case("chmodr"):
                 cmd.changeRemotePermissions(sftpChannel);
                 break;
