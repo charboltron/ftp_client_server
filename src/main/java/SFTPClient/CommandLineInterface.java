@@ -2,6 +2,12 @@ package SFTPClient;
 
 import com.jcraft.jsch.SftpException;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -40,7 +46,7 @@ public class CommandLineInterface {
 
 
     public static void main(String ... args){
-        if(enableLogging)
+        if(!enableLogging)
         {
             LogManager.getLogManager().reset();
         }
@@ -155,11 +161,85 @@ public class CommandLineInterface {
 
     public void setUserNameAndPassword(){
         Scanner input = new Scanner(System.in);
-        System.out.println("Username: ");
-        userName = input.nextLine();
-        System.out.println("Password: ");
-        password = input.nextLine();
+        System.out.println("If you would like to use a previous log in type -c, otherwise type -l: ");
+        String answer = input.nextLine();
+        if(answer.equals("-c"))
+        {
+            LOGGER.log( Level.INFO, "Reading log in information from file");
+            readCredentialsFromDisk();
+        }else{
+            System.out.println("Username: ");
+            userName = input.nextLine();
+            System.out.println("Password: ");
+            password = input.nextLine();
+            System.out.println("Would you like to save this log in(y/n):");
+            answer = input.nextLine();
+            if(answer.equals("y"))
+            {
+                writeCredentialsToDisk(HOST,userName,password);
+            }
+        }
+    }
 
+    private void readCredentialsFromDisk()//TODO encrypt file
+    {
+        LOGGER.log( Level.INFO, "Reading log in information from file");
+        List<String []> listOfCreds = new ArrayList<>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(new File("Connections.txt")));
+            String tempCreds;
+            while ((tempCreds = br.readLine()) != null) {
+                String creds[] = new String[3];
+                creds = tempCreds.split(" ");
+                for(int i = 0; i< 3;i++)
+                {
+                    listOfCreds.add(creds);
+                }
+            }
+        }catch (Exception e)
+        {
+            System.out.println("Something went wrong reading from disk");
+            LOGGER.log( Level.SEVERE, "Something went wrong while reading from file: "+e.getMessage());
+        }
+        System.out.println("Select the log in you would like to use:");
+        int logOnAmounts = listOfCreds.size();
+        for(int i = 0;i<logOnAmounts;i++)
+        {
+            String [] creds = listOfCreds.get(i);
+            System.out.println("["+(i+1)+"] "+creds[1]+" : "+creds[0]);
+        }
+        Scanner input = new Scanner(System.in);
+        int intInput = -1;
+        do{
+            try{
+                intInput = input.nextInt();
+                if(intInput < 0 || intInput > logOnAmounts)
+                {
+                    System.out.println("Enter a number between 0 and "+logOnAmounts);
+                }
+            }catch (Exception e){
+                System.out.println("Enter a valid number please");
+            }
+        }while (intInput < 0 || intInput > logOnAmounts);
+     //   HOST = listOfCreds.get(intInput)[0]; Uncomment this when we're ready
+        userName = listOfCreds.get(intInput-1)[1];
+        password = listOfCreds.get(intInput-1)[2];
+    }
+    private void writeCredentialsToDisk(String HOST,String userName,String password)
+    {
+        try{
+            LOGGER.log( Level.INFO, "Writing log in information to file");
+            FileWriter fw = new FileWriter(new File("Connections.txt"),false);
+            fw.write(HOST+" ");
+            fw.write(userName+" ");
+            fw.write(password+" ");
+            fw.write("/\n");
+            fw.close();
+        }catch (Exception e){
+            System.out.println("Something went wrong writing to a file");
+            LOGGER.log( Level.SEVERE, "Something went wrong while writing to file: "+e.getMessage());
+
+        }
     }
 
     public String getUsername(){
