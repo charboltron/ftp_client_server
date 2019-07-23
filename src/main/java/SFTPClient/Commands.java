@@ -178,5 +178,19 @@ public class Commands {
             return;
         }
     }
+
+    public void removeRemoteDirectory(ChannelSftp sftpChannel) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the name of the directory you want to delete: ");
+        String removeRemoteDirectory = scanner.nextLine().trim();
+        try {
+            sftpChannel.rmdir(removeRemoteDirectory);
+        } catch (SftpException e) {
+            e.printStackTrace();
+            System.out.println("There was an error deleting the directory on the remote server. See the message above.");
+            return;
+        }
+        System.out.println("Directory "+removeRemoteDirectory+" removed.");
+    }
 }
 
