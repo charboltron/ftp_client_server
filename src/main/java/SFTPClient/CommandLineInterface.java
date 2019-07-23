@@ -12,7 +12,8 @@ public class CommandLineInterface {
     private String command;
     private String userName;
     private String password;
-    private final String HOST = "104.248.67.51"; //Hard-coded for now
+    private String host;
+
 
     ArrayList<String> connectionCommands = new ArrayList<String> (Arrays.asList(
            "dirs", "lsr","lsr -al", "lsl", "cdr", "cdl", "pwdr", "mkdirr", "chmodr", "dl", "ul"));
@@ -41,7 +42,7 @@ public class CommandLineInterface {
             "\n\t\tul\t\t\t\tupload to current remote directory from current local directory" +
             "\n\t-d\t\tdisconnects SFTP server" +
             "\n\t-q\t\tquit SFTP client interface" +
-            "\n\n\tmore menu options coming soon...");
+            "\n\n\tmore menu options coming soon..."); //Weirdly, this seems to print formatted differently from the terminal than inside IDEA.
 
 
     CommandLineInterface(){}
@@ -74,7 +75,7 @@ public class CommandLineInterface {
                 break;
             case ("-c"):
                 setUserNameAndPassword();
-                ourConnection = new SFTPConnection(getUsername(), HOST, getPassword());
+                ourConnection = new SFTPConnection(getUsername(), host, getPassword());
                 ourConnection.connect();
                 if (!ourConnection.isConnected()){
                     System.out.println("Failed to connect, please try again.");
@@ -86,8 +87,12 @@ public class CommandLineInterface {
                     setCommand();
                     while(true){
                         if(getCommand().charAt(0) == '-'){
-                            if(getCommand().equals("-help")){ System.out.println(getMenu()); setCommand();}
-                            else{break;} //break while loop for non-SFTP client commands (i.e. '-q')
+                            if(getCommand().equals("-help")){
+                                System.out.println(getMenu()); setCommand();
+                            }
+                            else{
+                                break;
+                            } //break while loop for non-SFTP client commands (i.e. '-q')
                         }
                         try{
                             ourConnection.commandsManager(getCommand()); // if command doesn't throw sftp exception, executes SFTP navigation commands in SFTP commandsManager method
@@ -121,7 +126,9 @@ public class CommandLineInterface {
             default:
                 if (connectionCommands.contains(getCommand())) {
                     System.out.println("You need to make a connection before you can use this command. Please type -c.");
-                } else { System.out.println("Unknown command. Enter '-help' for list of available commands or '-q' to exit.");}
+                } else {
+                    System.out.println("Unknown command. Enter '-help' for list of available commands or '-q' to exit.");
+                }
                 setCommand();
                 break;
         }
@@ -148,10 +155,15 @@ public class CommandLineInterface {
 
     public void setUserNameAndPassword(){
         //Scanner input = new Scanner(System.in);
+        //System.out.println("Host: ");
+        //host = input.nextLine();
         //System.out.println("Username: ");
         //userName = input.nextLine();
         //System.out.println("Password: ");
         //password = input.nextLine();
+
+        //Hardcoded for ease of testing. Feel free to uncomment if you prefer to enter manually.
+        host = "104.248.67.51"; //Hard-coded for now
         userName = "agilesftp";
         password = "SimpleAndSecureFileTransferProtocol";
 

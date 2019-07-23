@@ -29,8 +29,7 @@ public class Commands {
             System.out.println("The directory you tried to change to does not exist.");
             return;
         } else {
-            curDir = new File(curDir+File.separator+directoryPath);
-            curDir = new File(curDir.getCanonicalPath());
+            curDir = new File(temp.getCanonicalPath());
             System.out.println("Local directory: "+curDir);
         }
     }
@@ -144,7 +143,7 @@ public class Commands {
             sftpChannel.mkdir(newDir);
         } catch (SftpException e) {
             e.printStackTrace();
-            System.out.println("There was an error creating the direcory on the remote server. See the message above.");
+            System.out.println("There was an error creating the directory on the remote server. See the message above.");
             return;
         }
         System.out.println("New directory "+newDir+" created!");
