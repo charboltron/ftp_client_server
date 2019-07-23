@@ -25,6 +25,8 @@ public class SFTPConnection {
     public void connect(){
 
         try {
+            IdleTimer idleTimer = new IdleTimer(this);
+            idleTimer.runIdleTimer();
             JSch jsch = new JSch(); //Creates a class object of JSch which allows us to access a server over sftp
             session = jsch.getSession(username, host, PORT); //returns a session object
             session.setPassword(pwd);
