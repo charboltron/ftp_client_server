@@ -80,7 +80,7 @@ public class SFTPConnection {
                 Commands.uploadFiles(sftpChannel);
                 break;
             case("dl"):
-                System.out.println("Unimplemented method: Download file from remote");
+                Commands.downloadFile(sftpChannel);
                 break;
             default:
                 System.out.println("Command not recognized, enter '-help' for a list of available options");
