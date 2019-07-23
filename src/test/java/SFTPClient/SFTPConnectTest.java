@@ -1,4 +1,4 @@
-package FTBClient;
+package SFTPClient;
 
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -11,12 +11,9 @@ public class SFTPConnectTest {
     public void testConnection(){
 
         SFTPConnection s = new SFTPConnection("agilesftp", "104.248.67.51", "SimpleAndSecureFileTransferProtocol");
-
-            s.Connect();
-
-
+        s.connect();
         assertThat(s.isConnected(), equalTo(true));
-        s.Disconnect();
+        s.disconnect();
         assertThat(s.isConnected(), equalTo(false));
     }
 }
