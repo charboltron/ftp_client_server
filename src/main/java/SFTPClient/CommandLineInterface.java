@@ -2,6 +2,9 @@ package SFTPClient;
 
 import com.jcraft.jsch.SftpException;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class CommandLineInterface {
@@ -9,7 +12,12 @@ public class CommandLineInterface {
     private String command;
     private String userName;
     private String password;
-    private final String HOST = "104.248.67.51";
+    private String host;
+
+
+    ArrayList<String> connectionCommands = new ArrayList<String> (Arrays.asList(
+           "dirs", "lsr","lsr -al", "lsl", "cdr", "cdl", "pwdr", "mkdirr", "chmodr", "dl", "ul"));
+
 
     public SFTPConnection ourConnection;
 
@@ -19,23 +27,28 @@ public class CommandLineInterface {
     public StringBuilder menu = new StringBuilder("THIS IS THE MENU:" +
             "\n\t-help\tprints help menu" +
             "\n\t-c\t\tconnects SFTP server" +
+            "\n\t\tdirs\t\t\tprints both local and remote working directories"+
             "\n\t\tlsr\t\t\t\tlists contents of current remote directory" +
+            "\n\t\tlsr -al\t\t\tlists contents of current remote directory with permissions" +
             "\n\t\tlsl\t\t\t\tlists contents of current local directory" +
+            "\n\t\tcdr\t\t\t\tchange remote directory" +
+            "\n\t\tcdl\t\t\t\tchange local directory" +
+            "\n\t\tmvr\t\t\t\trename or move a file or directory on remote server" +
             "\n\t\tpwdr\t\t\tprints remote working directory" +
             "\n\t\tpwdl\t\t\tprints local working directory" +
-            "\n\t\tdl <fileName>\tdownload <fileName> from current remote directory to current local directory" +
-            "\n\t\tul <fileName>\tupload <fileName> to current remote directory from current local directory" +
+            "\n\t\tmkdirr\t\t\tmake directory on remote server" +
+            "\n\t\tchmodr\t\t\tchange remote file permissions" +
+            "\n\t\tdl\t\t\t\tdownload from current remote directory to current local directory" +
+            "\n\t\tul\t\t\t\tupload to current remote directory from current local directory" +
             "\n\t-d\t\tdisconnects SFTP server" +
             "\n\t-q\t\tquit SFTP client interface" +
-            "\n\n\tmore menu options coming soon...");
-
-
+            "\n\n\tmore menu options coming soon..."); //Weirdly, this seems to print formatted differently from the terminal than inside IDEA.
 
 
     CommandLineInterface(){}
 
 
-    public static void main(String ... args){
+    public static void main(String ... args) throws IOException {
 
         // instantiate new CLI object
         CommandLineInterface mainCLI = new CommandLineInterface();
@@ -46,18 +59,14 @@ public class CommandLineInterface {
 
         while (true){
 //            if (mainCLI.ourConnection.isConnected()){
-//                //TODO: refactor CLI use of optionsManager 'while-loop' into its own method for re-use here
+//                //TODO: refactor CLI use of commandsManager 'while-loop' into its own method for re-use here
 //            }
             mainCLI.ftpClientManager(mainCLI.getCommand());
         }
-
-
-
-
     }
 
 
-    public void ftpClientManager(String command){
+    public void ftpClientManager(String command) throws IOException {
 
         switch(command){
             case ("-help"):
@@ -66,43 +75,39 @@ public class CommandLineInterface {
                 break;
             case ("-c"):
                 setUserNameAndPassword();
-                ourConnection = new SFTPConnection(getUsername(), HOST, getPassword());
+                ourConnection = new SFTPConnection(getUsername(), host, getPassword());
                 ourConnection.connect();
                 if (!ourConnection.isConnected()){
                     System.out.println("Failed to connect, please try again.");
                     setCommand();
                     break;
                 }
-                // TODO: re-enter options manager if '-help' received after successful '-c' connection. Might need to restructure location of optionsManager
                 else{
                     System.out.println("Connection successful! Enjoy your files, stupid.");
                     setCommand();
                     while(true){
                         if(getCommand().charAt(0) == '-'){
-                            break; //break while loop for non-SFTP client commands (i.e. '-q', '-help')
+                            if(getCommand().equals("-help")){
+                                System.out.println(getMenu()); setCommand();
+                            }
+                            else{
+                                break;
+                            } //break while loop for non-SFTP client commands (i.e. '-q')
                         }
                         try{
-                            ourConnection.optionsManager(getCommand()); // if command doesn't throw sftp exception, executes SFTP navigation commands in SFTP optionsManager method
+                            ourConnection.commandsManager(getCommand()); // if command doesn't throw sftp exception, executes SFTP navigation commands in SFTP commandsManager method
 
                         }
                         catch(SftpException shit){ // if SftpException thrown, print exception, followed by help message, then retrieve new command after disconnecting from SFTP server
                             System.err.println(shit.getMessage());
-                            if(ourConnection.isConnected()){
-                                ourConnection.disconnect();
-                            }
-                            System.out.println("Connection failed... enter '-c' to reconnect, '-q' to quit', or '-help' a list of available options\n");
-                            setCommand();
-                            break; //break while loop with new command
+                            System.out.println("Something went wrong, see the message above. Please try another command.");
                         }
-
                         setCommand();
-
-
                     }
                     break;
                 }
             case("-d"):
-                if(ourConnection != null && ourConnection.isConnected()){
+                if(ourConnection != null && ourConnection.session.isConnected()){
                     ourConnection.disconnect();
                     System.out.println("Connection disconnected, enter '-q' to quit or '-help' to see available options\n");
                     setCommand();
@@ -119,7 +124,11 @@ public class CommandLineInterface {
                 System.exit(0);
                 break;
             default:
-                System.out.println("Unknown command. Enter '-help' for list of available commands or '-q' to exit.");
+                if (connectionCommands.contains(getCommand())) {
+                    System.out.println("You need to make a connection before you can use this command. Please type -c.");
+                } else {
+                    System.out.println("Unknown command. Enter '-help' for list of available commands or '-q' to exit.");
+                }
                 setCommand();
                 break;
         }
@@ -137,7 +146,7 @@ public class CommandLineInterface {
     }
 
     public String getCommand(){
-        return command;
+        return command.trim();
     }
 
     public String getGreeting(){
@@ -145,11 +154,18 @@ public class CommandLineInterface {
     }
 
     public void setUserNameAndPassword(){
-        Scanner input = new Scanner(System.in);
-        System.out.println("Username: ");
-        userName = input.nextLine();
-        System.out.println("Password: ");
-        password = input.nextLine();
+        //Scanner input = new Scanner(System.in);
+        //System.out.println("Host: ");
+        //host = input.nextLine();
+        //System.out.println("Username: ");
+        //userName = input.nextLine();
+        //System.out.println("Password: ");
+        //password = input.nextLine();
+
+        //Hardcoded for ease of testing. Feel free to uncomment if you prefer to enter manually.
+        host = "104.248.67.51"; //Hard-coded for now
+        userName = "agilesftp";
+        password = "SimpleAndSecureFileTransferProtocol";
 
     }
 
