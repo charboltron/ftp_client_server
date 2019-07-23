@@ -2,21 +2,17 @@ package SFTPClient;
 
 import com.jcraft.jsch.*;
 
-import javax.swing.filechooser.FileSystemView;
 import java.io.*;
 //import java.lang.invoke.DirectMethodHandle$Holder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 /**
  * * @param args
  */
 public class Commands {
 
-    File curDir;
+    File currentLocalPath;
 
-    Commands(){this.curDir = new File(File.separator);}
+    Commands(){this.currentLocalPath = new File(File.separator);}
 
     public void changeLocalDirectory() throws IOException {
 
@@ -24,13 +20,13 @@ public class Commands {
         System.out.println("Enter directory name: ");
         File temp = null;
         String directoryPath = scanner.nextLine().trim();
-        temp = new File(curDir+File.separator+directoryPath);
+        temp = new File(currentLocalPath +File.separator+directoryPath);
         if(!temp.isDirectory()) {
             System.out.println("The directory you tried to change to does not exist.");
             return;
         } else {
-            curDir = new File(temp.getCanonicalPath());
-            System.out.println("Local directory: "+curDir);
+            currentLocalPath = new File(temp.getCanonicalPath());
+            System.out.println("Local directory: "+ currentLocalPath);
         }
     }
 
@@ -70,7 +66,7 @@ public class Commands {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the file you want to see:");
         String localf = scanner.nextLine().trim();
-        File localFile = new File(curDir+File.separator+localf);
+        File localFile = new File(currentLocalPath +File.separator+localf);
         FileReader fr = null;
         BufferedReader br = null;
         String line = null;
@@ -111,9 +107,9 @@ public class Commands {
 
     public void listLocalFiles(ChannelSftp sftpChannel) throws IOException {
 
-        File[] files = curDir.listFiles();
+        File[] files = currentLocalPath.listFiles();
         for (File f : files) {
-            if ((f.isFile() || f.isDirectory()) && !(f.equals(".") || f.equals(".."))){
+            if ((f.isFile() || f.isDirectory()) && !(f.getName().startsWith("."))){
                 System.out.println(f.getName());
             }
         }
@@ -126,7 +122,7 @@ public class Commands {
         System.out.println("Enter the file you want to upload: ");
         String path = scanner.nextLine().trim();
         try {
-            FileInputStream source = new FileInputStream(curDir + File.separator + path);
+            FileInputStream source = new FileInputStream(currentLocalPath + File.separator + path);
             sftpChannel.put(source, sftpChannel.pwd() + File.separator + path);
         } catch (IOException e) {
             System.err.println("Unable to find input file");

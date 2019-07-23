@@ -61,13 +61,13 @@ public class SFTPConnection {
         switch (command){
             case ("dirs"):
                 System.out.println("Remote directory: "+sftpChannel.pwd());
-                System.out.println("Local  directory: "+cmd.curDir);
+                System.out.println("Local  directory: "+cmd.currentLocalPath);
                 break;
             case ("pwdr"):
                 System.out.println(sftpChannel.pwd());
                 break;
             case("pwdl"):
-                System.out.println(cmd.curDir);
+                System.out.println(cmd.currentLocalPath);
                 break;
             case("printr"):
                 cmd.printRemoteFile(sftpChannel);
