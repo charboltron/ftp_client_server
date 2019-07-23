@@ -1,8 +1,6 @@
 package SFTPClient;
 
 import com.jcraft.jsch.*;
-
-import java.io.IOException;
 //import java.lang.invoke.DirectMethodHandle$Holder;
 
 
