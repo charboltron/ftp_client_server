@@ -23,7 +23,7 @@ public class CommandLineInterface {
             "\n\t\tlsl\t\t\t\tlists contents of current local directory" +
             "\n\t\tpwdr\t\t\tprints remote working directory" +
             "\n\t\tpwdl\t\t\tprints local working directory" +
-            "\n\t\tdl <fileName>\tdownload <fileName> from current remote directory to current local directory" +
+            "\n\t\tdl \tdownload a file from current remote directory to current local directory" +
             "\n\t\tul <fileName>\tupload <fileName> to current remote directory from current local directory" +
             "\n\t-d\t\tdisconnects SFTP server" +
             "\n\t-q\t\tquit SFTP client interface" +
