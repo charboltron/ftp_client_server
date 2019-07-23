@@ -9,16 +9,17 @@ import java.io.IOException;
 public class SFTPConnection {
 
     String username, host, pwd;
-    static final int PORT = 22;
+    static final int PORT = 22; //leaving static until we have a way of changing port
     Session session = null;
     ChannelSftp sftpChannel = null;
-    boolean connected = false;
+    Commands cmd;
 
     SFTPConnection(String username, String host, String pwd){
 
         this.username = username;
         this.host = host;
         this.pwd = pwd;
+        this.cmd = new Commands();
     }
 
     public void connect(){
@@ -35,49 +36,71 @@ public class SFTPConnection {
             sftpChannel = (ChannelSftp) session.openChannel("sftp");
             sftpChannel.connect();
             System.out.println("SFTP Channel created!");
-            connected = true;
 
         } catch (JSchException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
     }
 
     public void disconnect(){
 
-        sftpChannel.disconnect();
-        session.disconnect();
-        connected = false;
+        if (session.isConnected()) {
+            sftpChannel.disconnect();
+            session.disconnect();
+        }
+
     }
 
     public boolean isConnected(){
-        return connected;
+        return session.isConnected();
     }
 
-    public void optionsManager(String option) throws SftpException{
+    public void commandsManager(String command) throws SftpException, IOException {
 
-        switch (option){
+        switch (command){
+            case ("dirs"):
+                System.out.println("Remote directory: "+sftpChannel.pwd());
+                System.out.println("Local  directory: "+cmd.currentLocalPath);
+                break;
             case ("pwdr"):
                 System.out.println(sftpChannel.pwd());
                 break;
             case("pwdl"):
-                System.out.println(sftpChannel.lpwd());
+                System.out.println(cmd.currentLocalPath);
                 break;
-            case("print"):
-                Commands.printFile(sftpChannel);
+            case("printr"):
+                cmd.printRemoteFile(sftpChannel);
+                break;
+            case("printl"):
+                cmd.printLocalFile();
                 break;
             case ("lsr"):
-                Commands.listFiles(sftpChannel);
+                cmd.listRemoteFiles(sftpChannel, "");
                 break;
-            case("cd"):
-                Commands.changeDirectory(sftpChannel);
+            case ("lsr -al"):
+                cmd.listRemoteFiles(sftpChannel, "-al");
+                break;
+            case("cdr"):
+                cmd.changeRemoteDirectory(sftpChannel);
+                break;
+            case("cdl"):
+                cmd.changeLocalDirectory();
                 break;
             case("lsl"):
-                //Commands.listLocalFiles(sftpChannel);
-                //System.out.println("Unimplemented method: List Files.");
+                cmd.listLocalFiles(sftpChannel);
+                break;
+            case("mkdirr"):
+                cmd.makeRemoteDirectory(sftpChannel);
+                break;
+            case("chmodr"):
+                cmd.changeRemotePermissions(sftpChannel);
+                break;
+            case("mvr"):
+                cmd.renameRemoteFile(sftpChannel);
                 break;
             case("ul"):
-                Commands.uploadFiles(sftpChannel);
+                cmd.uploadFiles(sftpChannel);
                 break;
             case("dl"):
                 Commands.downloadFile(sftpChannel);
