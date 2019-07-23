@@ -1,6 +1,10 @@
 package SFTPClient;
 
 import com.jcraft.jsch.*;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 //import java.lang.invoke.DirectMethodHandle$Holder;
 
 
@@ -11,16 +15,17 @@ public class SFTPConnection {
     Session session = null;
     ChannelSftp sftpChannel = null;
     boolean connected = false;
+    private static final Logger LOGGER = Logger.getLogger( "SFTPConnection" );
 
     SFTPConnection(String username, String host, String pwd){
-
+        LOGGER.log( Level.INFO, "Creating SFTPConnection object");
         this.username = username;
         this.host = host;
         this.pwd = pwd;
     }
 
     public void connect(){
-
+        LOGGER.log( Level.INFO, "Attempting to connect to "+host);
         try {
             JSch jsch = new JSch(); //Creates a class object of JSch which allows us to access a server over sftp
             session = jsch.getSession(username, host, PORT); //returns a session object
@@ -29,13 +34,17 @@ public class SFTPConnection {
             System.out.println("Establishing Connection with " + host + "...");
             session.connect();
             System.out.println("Connection established!");
+            LOGGER.log( Level.INFO, "Successfully connected");
             System.out.println("Creating SFTP Channel...");
             sftpChannel = (ChannelSftp) session.openChannel("sftp");
             sftpChannel.connect();
             System.out.println("SFTP Channel created!");
+            LOGGER.log( Level.INFO, "SFTP channel successfully connected");
             connected = true;
 
         } catch (JSchException e) {
+            LOGGER.log( Level.SEVERE, "Error Connecting");
+            LOGGER.log( Level.SEVERE, "Error"+e.getMessage());
             System.out.println(e);
         }
 
@@ -53,7 +62,7 @@ public class SFTPConnection {
     }
 
     public void optionsManager(String option) throws SftpException{
-
+        LOGGER.log( Level.INFO, "Entering optionsManager");
         switch (option){
             case ("pwdr"):
                 System.out.println(sftpChannel.pwd());

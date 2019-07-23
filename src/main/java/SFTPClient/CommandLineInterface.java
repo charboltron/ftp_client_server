@@ -3,13 +3,17 @@ package SFTPClient;
 import com.jcraft.jsch.SftpException;
 
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 public class CommandLineInterface {
-
+    private static final java.util.logging.Logger LOGGER = Logger.getLogger( "Commands" );
     private String command;
     private String userName;
     private String password;
     private final String HOST = "104.248.67.51";
+    private static boolean enableLogging = false;
 
     public SFTPConnection ourConnection;
 
@@ -36,7 +40,12 @@ public class CommandLineInterface {
 
 
     public static void main(String ... args){
+        if(enableLogging)
+        {
+            LogManager.getLogManager().reset();
+        }
 
+        LOGGER.log( Level.INFO, "Starting program");
         // instantiate new CLI object
         CommandLineInterface mainCLI = new CommandLineInterface();
         System.out.println(mainCLI.getGreeting());  // prints greeting
