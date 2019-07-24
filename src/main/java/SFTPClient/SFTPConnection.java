@@ -103,7 +103,7 @@ public class SFTPConnection {
                 cmd.uploadFiles(sftpChannel);
                 break;
             case("dl"):
-                Commands.downloadFile(sftpChannel);
+                cmd.downloadFile(sftpChannel);
                 break;
             default:
                 System.out.println("Command not recognized, enter '-help' for a list of available options");

@@ -13,7 +13,7 @@ public class Commands {
 
     File currentLocalPath;
 
-    Commands(){this.currentLocalPath = new File(File.separator);}
+    Commands(){this.currentLocalPath = new File("").getAbsoluteFile();}
 
     public void changeLocalDirectory() throws IOException {
 
@@ -180,7 +180,7 @@ public class Commands {
         }
     }
 
-    public static void downloadFile(ChannelSftp sftpChannel) {
+    public void downloadFile(ChannelSftp sftpChannel) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the path to the file you want to download (relative to current remote directory): ");
         String readPath = scanner.nextLine().trim();
