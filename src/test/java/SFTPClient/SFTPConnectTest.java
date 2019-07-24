@@ -12,8 +12,8 @@ public class SFTPConnectTest {
 
         SFTPConnection s = new SFTPConnection("agilesftp", "104.248.67.51", "SimpleAndSecureFileTransferProtocol");
         s.connect();
-        assertThat(s.isConnected(), equalTo(true));
+        assertThat(s.session.isConnected(), equalTo(true));
         s.disconnect();
-        assertThat(s.isConnected(), equalTo(false));
+        assertThat(s.session.isConnected(), equalTo(false));
     }
 }
