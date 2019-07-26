@@ -146,6 +146,34 @@ public class Commands {
         System.out.println("New directory "+newDir+" created!");
     }
 
+    public void removeRemoteFile(ChannelSftp sftpChannel) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the name of the file you want to delete: ");
+        String removeRemoteFile = scanner.nextLine().trim();
+        try {
+            sftpChannel.rm(removeRemoteFile);
+        } catch (SftpException e) {
+            e.printStackTrace();
+            System.out.println("There was an error deleting the file on the remote server. See the message above.");
+            return;
+        }
+        System.out.println("File "+removeRemoteFile+" removed.");
+    }
+
+    public void removeRemoteDirectory(ChannelSftp sftpChannel) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the name of the directory you want to delete: ");
+        String removeRemoteDirectory = scanner.nextLine().trim();
+        try {
+            sftpChannel.rmdir(removeRemoteDirectory);
+        } catch (SftpException e) {
+            e.printStackTrace();
+            System.out.println("There was an error deleting the directory on the remote server. See the message above.");
+            return;
+        }
+        System.out.println("Directory "+removeRemoteDirectory+" removed.");
+    }
+
     public void changeRemotePermissions(ChannelSftp sftpChannel) {
 
         Scanner scanner = new Scanner(System.in);
@@ -209,6 +237,7 @@ public class Commands {
             System.out.println("error getting file!");
         }
     }
+
 
 }
 
