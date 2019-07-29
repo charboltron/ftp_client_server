@@ -208,6 +208,18 @@ public class Commands {
         }
     }
 
+    private String buildSuccessMessage(String localFilePath, String remoteFilePath) {
+        String successMessage = "Succesfully downloaded file: ";
+        String localFileNameNoPath = getFilenameFromPath(localFilePath);
+        String remoteFileNameNoPath = getFilenameFromPath(remoteFilePath);
+        if (!localFileNameNoPath.equals(remoteFileNameNoPath)) {
+            successMessage += remoteFileNameNoPath + " (remote) ---> " + localFileNameNoPath + " (local)";
+        } else {
+            successMessage += localFileNameNoPath;
+        }
+        return successMessage;
+    }
+
     private void downloadFileGivenNameAndPath(ChannelSftp sftpChannel, String remoteFilePath, String localFilePath) {
         InputStream remoteFile = null;
         try {
@@ -228,15 +240,7 @@ public class Commands {
             System.out.println("error getting file: " + localFilePath);
             return;
         }
-        String successMessage = "Succesfully downloaded file: ";
-        String localFileNameNoPath = getFilenameFromPath(localFilePath);
-        String remoteFileNameNoPath = getFilenameFromPath(remoteFilePath);
-        if (!localFileNameNoPath.equals(remoteFileNameNoPath)) {
-            successMessage += remoteFileNameNoPath + " (remote) ---> " + localFileNameNoPath + " (local)";
-        } else {
-            successMessage += localFileNameNoPath;
-        }
-        System.out.println(successMessage);
+        System.out.println(buildSuccessMessage(localFilePath, remoteFilePath));
     }
 
     public void downloadFile(ChannelSftp sftpChannel) {
