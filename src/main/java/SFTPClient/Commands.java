@@ -228,6 +228,15 @@ public class Commands {
             System.out.println("error getting file: " + localFilePath);
             return;
         }
+        String successMessage = "Succesfully downloaded file: ";
+        String localFileNameNoPath = getFilenameFromPath(localFilePath);
+        String remoteFileNameNoPath = getFilenameFromPath(remoteFilePath);
+        if (!localFileNameNoPath.equals(remoteFileNameNoPath)) {
+            successMessage += remoteFileNameNoPath + " (remote) ---> " + localFileNameNoPath + " (local)";
+        } else {
+            successMessage += localFileNameNoPath;
+        }
+        System.out.println(successMessage);
     }
 
     public void downloadFile(ChannelSftp sftpChannel) {
