@@ -214,7 +214,7 @@ public class Commands {
             remoteFile = sftpChannel.get(remoteFilePath);
         } catch (SftpException ex) {
             System.err.println(ex.getMessage());
-            System.out.println("An error occurred while trying to get the remote file.");
+            System.out.println("An error occurred while trying to get the remote file: " + remoteFilePath);
             return;
         }
         OutputStream fileOut = null;
@@ -225,7 +225,7 @@ public class Commands {
             fileOut.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
-            System.out.println("error getting file!");
+            System.out.println("error getting file: " + localFilePath);
             return;
         }
     }
@@ -247,6 +247,24 @@ public class Commands {
         downloadFileGivenNameAndPath(sftpChannel, readPath, writePath);
     }
 
+    public void downloadMultipleFiles(ChannelSftp sftpChannel) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter a list of space-separated paths to the file(s) you want to download (relative to current remote directory): ");
+        String userInputListOfFilesRemote = scanner.nextLine().trim();
+        String[] listOfFilesRemote = userInputListOfFilesRemote.split(" ");
+        System.out.println("Enter the path(s) to save the file(s) as (if not specified, will be the same as remote filepath): ");
+        String userInputListOfFilesLocal = scanner.nextLine().trim();
+        String[] listOfFilesLocal = userInputListOfFilesLocal.split(" ");
+        if (listOfFilesLocal.length > listOfFilesRemote.length) {
+            System.out.println("Too many local filenames specified!");
+            return;
+        }
+        for (int i = 0; i < listOfFilesRemote.length; i++) {
+            String readPath = listOfFilesRemote[i];
+            String writePath = (listOfFilesLocal.length > i) && !(listOfFilesLocal[i].equals("")) ? listOfFilesLocal[i] : listOfFilesRemote[i];
+            downloadFileGivenNameAndPath(sftpChannel, readPath, writePath);
+        }
+    }
 
 }
 
