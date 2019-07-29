@@ -240,8 +240,20 @@ public class Commands {
         }
         System.out.println("Enter the path to save the file as (if not specified, will be the same as remote filepath): ");
         String writePath = scanner.nextLine().trim();
-        if (writePath.equals("")) writePath = readPath;
+        if (writePath.equals("")) writePath = getFilenameFromPath(readPath);
         downloadFileGivenNameAndPath(sftpChannel, readPath, writePath);
+    }
+
+    private String getFilenameFromPath(String fileNameWithPath) {
+        String[] filenameWithPathArr = fileNameWithPath.split(File.separator);
+        return filenameWithPathArr[filenameWithPathArr.length - 1];
+    }
+
+    private String getWritePathFromGivenParams(String[] localF, String[] remoteF, int i) {
+        if ((localF.length > i) && !(localF[i].equals(""))) {
+            return localF[i];
+        }
+        return getFilenameFromPath(remoteF[i]);
     }
 
     public void downloadMultipleFiles(ChannelSftp sftpChannel) {
@@ -258,7 +270,7 @@ public class Commands {
         }
         for (int i = 0; i < listOfFilesRemote.length; i++) {
             String readPath = listOfFilesRemote[i];
-            String writePath = (listOfFilesLocal.length > i) && !(listOfFilesLocal[i].equals("")) ? listOfFilesLocal[i] : listOfFilesRemote[i];
+            String writePath = getWritePathFromGivenParams(listOfFilesLocal, listOfFilesRemote, i);
             downloadFileGivenNameAndPath(sftpChannel, readPath, writePath);
         }
     }
