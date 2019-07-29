@@ -238,12 +238,9 @@ public class Commands {
             System.out.println("Can't get an empty filename!");
             return;
         }
-        System.out.println("Enter the path to save the file as: ");
+        System.out.println("Enter the path to save the file as (if not specified, will be the same as remote filepath): ");
         String writePath = scanner.nextLine().trim();
-        if (writePath.equals("")) {
-            System.out.println("Can't write an empty filename!");
-            return;
-        }
+        if (writePath.equals("")) writePath = readPath;
         downloadFileGivenNameAndPath(sftpChannel, readPath, writePath);
     }
 
