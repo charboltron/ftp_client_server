@@ -93,6 +93,9 @@ public class SFTPConnection {
             case("mkdirr"):
                 cmd.makeRemoteDirectory(sftpChannel);
                 break;
+            case("mkdirl"):
+                cmd.makeLocalDirectory();
+                break;
             case("rmdirr"):
                 cmd.removeRemoteDirectory(sftpChannel);
                 break;
@@ -104,6 +107,9 @@ public class SFTPConnection {
                 break;
             case("mvr"):
                 cmd.renameRemoteFile(sftpChannel);
+                break;
+            case("mvl"):
+                cmd.renameLocalFile();
                 break;
             case("ul"):
                 cmd.uploadFiles(sftpChannel);
