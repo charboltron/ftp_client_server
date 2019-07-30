@@ -111,6 +111,9 @@ public class SFTPConnection {
             case("dl"):
                 cmd.downloadFile(sftpChannel);
                 break;
+            case("dlm"):
+                cmd.downloadMultipleFiles(sftpChannel);
+                break;
             default:
                 System.out.println("Command not recognized, enter '-help' for a list of available options");
                 break;

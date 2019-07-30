@@ -16,7 +16,7 @@ public class CommandLineInterface {
 
 
     ArrayList<String> connectionCommands = new ArrayList<String> (Arrays.asList(
-           "dirs", "lsr","lsr -al", "lsl", "cdr", "cdl", "pwdr", "mkdirr", "chmodr", "dl", "ul"));
+           "dirs", "lsr","lsr -al", "lsl", "cdr", "cdl", "pwdr", "mkdirr", "chmodr", "dl", "dlm", "ul"));
 
 
     public SFTPConnection ourConnection;
@@ -41,6 +41,7 @@ public class CommandLineInterface {
             "\n\t\trmr\t\t\tdelete file on remote server" +
             "\n\t\tchmodr\t\t\tchange remote file permissions" +
             "\n\t\tdl\t\t\t\tdownload from current remote directory to current local directory" +
+            "\n\t\tdlm\t\t\t\tdownload multiple from current remote directory to current local directory" +
             "\n\t\tul\t\t\t\tupload to current remote directory from current local directory" +
             "\n\t-d\t\tdisconnects SFTP server" +
             "\n\t-q\t\tquit SFTP client interface" +

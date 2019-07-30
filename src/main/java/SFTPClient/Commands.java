@@ -208,36 +208,85 @@ public class Commands {
         }
     }
 
-    public void downloadFile(ChannelSftp sftpChannel) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the path to the file you want to download (relative to current remote directory): ");
-        String readPath = scanner.nextLine().trim();
+    private String buildSuccessMessage(String localFilePath, String remoteFilePath) {
+        String successMessage = "Succesfully downloaded file: ";
+        String localFileNameNoPath = getFilenameFromPath(localFilePath);
+        String remoteFileNameNoPath = getFilenameFromPath(remoteFilePath);
+        if (!localFileNameNoPath.equals(remoteFileNameNoPath)) {
+            successMessage += remoteFileNameNoPath + " (remote) ---> " + localFileNameNoPath + " (local)";
+        } else {
+            successMessage += localFileNameNoPath;
+        }
+        return successMessage;
+    }
+
+    private void downloadFileGivenNameAndPath(ChannelSftp sftpChannel, String remoteFilePath, String localFilePath) {
         InputStream remoteFile = null;
         try {
-            remoteFile = sftpChannel.get(readPath);
+            remoteFile = sftpChannel.get(remoteFilePath);
         } catch (SftpException ex) {
             System.err.println(ex.getMessage());
-            System.out.println("An error occurred while trying to get the remote file.");
+            System.out.println("An error occurred while trying to get the remote file: " + remoteFilePath);
             return;
         }
-        System.out.println("Enter the path to save the file as: ");
-        String writePath = scanner.nextLine().trim();
-        if (writePath.equals("")) {
-            System.out.println("Can't have an empty filename!");
-            return;
-        }
-        File writeFile = new File(this.currentLocalPath + File.separator + writePath);
         OutputStream fileOut = null;
+        File writeFile = new File(this.currentLocalPath + File.separator + localFilePath);
         try {
             fileOut = new FileOutputStream(writeFile);
             IOUtils.copy(remoteFile, fileOut);
             fileOut.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
-            System.out.println("error getting file!");
+            System.out.println("error getting file: " + localFilePath);
+            return;
         }
+        System.out.println(buildSuccessMessage(localFilePath, remoteFilePath));
     }
 
+    public void downloadFile(ChannelSftp sftpChannel) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the path to the file you want to download (relative to current remote directory): ");
+        String readPath = scanner.nextLine().trim();
+        if (readPath.equals("")) {
+            System.out.println("Can't get an empty filename!");
+            return;
+        }
+        System.out.println("Enter the path to save the file as (if not specified, will be the same as remote filepath): ");
+        String writePath = scanner.nextLine().trim();
+        if (writePath.equals("")) writePath = getFilenameFromPath(readPath);
+        downloadFileGivenNameAndPath(sftpChannel, readPath, writePath);
+    }
+
+    private String getFilenameFromPath(String fileNameWithPath) {
+        String[] filenameWithPathArr = fileNameWithPath.split(File.separator);
+        return filenameWithPathArr[filenameWithPathArr.length - 1];
+    }
+
+    private String getWritePathFromGivenParams(String[] localF, String[] remoteF, int i) {
+        if ((localF.length > i) && !(localF[i].equals(""))) {
+            return localF[i];
+        }
+        return getFilenameFromPath(remoteF[i]);
+    }
+
+    public void downloadMultipleFiles(ChannelSftp sftpChannel) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter a list of space-separated paths to the file(s) you want to download (relative to current remote directory): ");
+        String userInputListOfFilesRemote = scanner.nextLine().trim();
+        String[] listOfFilesRemote = userInputListOfFilesRemote.split(" ");
+        System.out.println("Enter the path(s) to save the file(s) as (if not specified, will be the same as remote filepath): ");
+        String userInputListOfFilesLocal = scanner.nextLine().trim();
+        String[] listOfFilesLocal = userInputListOfFilesLocal.split(" ");
+        if (listOfFilesLocal.length > listOfFilesRemote.length) {
+            System.out.println("Too many local filenames specified!");
+            return;
+        }
+        for (int i = 0; i < listOfFilesRemote.length; i++) {
+            String readPath = listOfFilesRemote[i];
+            String writePath = getWritePathFromGivenParams(listOfFilesLocal, listOfFilesRemote, i);
+            downloadFileGivenNameAndPath(sftpChannel, readPath, writePath);
+        }
+    }
 
 }
 
