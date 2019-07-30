@@ -149,12 +149,12 @@ public class Commands {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the name of the directory you want to create: ");
         String newLocalDir = scanner.nextLine().trim();
-        boolean alreadyExists = (new File(newLocalDir).isDirectory());
+        boolean alreadyExists = (new File(currentLocalPath+File.separator+newLocalDir).isDirectory());
         if(alreadyExists){
             System.out.println("Error. Existing directory: the directory you are trying to create already exists.");
             return;
         }
-        boolean directoryCreated = (new File(newLocalDir)).mkdir();
+        boolean directoryCreated = (new File(currentLocalPath+File.separator+newLocalDir)).mkdir();
         if (directoryCreated) {
             System.out.println("New local directory "+newLocalDir+" created!");
         } else {
@@ -229,7 +229,7 @@ public class Commands {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the file/path for the file/directory you want to rename: ");
         String pathOld = scanner.nextLine().trim();
-        File oldLocalFile = new File(pathOld);
+        File oldLocalFile = new File(currentLocalPath+File.separator+pathOld);
         if (!oldLocalFile.exists()){
             System.out.println("Error. The file you want to rename doesn't exist! Check your local directory using `dirs` or `lsl`");
             return;
@@ -237,7 +237,7 @@ public class Commands {
 
         System.out.println("Enter the new name to rename the file/directory as: ");
         String pathNew = scanner.nextLine().trim();
-        File newLocalFileRename = new File(pathNew);
+        File newLocalFileRename = new File(currentLocalPath+File.separator+pathNew);
 
         if (newLocalFileRename.exists()) {
             System.out.println("Error. Existing file: there is already a file or directory with the new name you're trying use.");
