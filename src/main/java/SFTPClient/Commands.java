@@ -5,6 +5,7 @@ import com.jcraft.jsch.*;
 import java.io.*;
 //import java.lang.invoke.DirectMethodHandle$Holder;
 import java.util.*;
+import org.apache.commons.io.IOUtils;
 /**
  * * @param args
  */
@@ -12,7 +13,7 @@ public class Commands {
 
     File currentLocalPath;
 
-    Commands(){this.currentLocalPath = new File(File.separator);}
+    Commands(){this.currentLocalPath = new File("").getAbsoluteFile();}
 
     public void changeLocalDirectory() throws IOException {
 
@@ -145,6 +146,34 @@ public class Commands {
         System.out.println("New directory "+newDir+" created!");
     }
 
+    public void removeRemoteFile(ChannelSftp sftpChannel) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the name of the file you want to delete: ");
+        String removeRemoteFile = scanner.nextLine().trim();
+        try {
+            sftpChannel.rm(removeRemoteFile);
+        } catch (SftpException e) {
+            e.printStackTrace();
+            System.out.println("There was an error deleting the file on the remote server. See the message above.");
+            return;
+        }
+        System.out.println("File "+removeRemoteFile+" removed.");
+    }
+
+    public void removeRemoteDirectory(ChannelSftp sftpChannel) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the name of the directory you want to delete: ");
+        String removeRemoteDirectory = scanner.nextLine().trim();
+        try {
+            sftpChannel.rmdir(removeRemoteDirectory);
+        } catch (SftpException e) {
+            e.printStackTrace();
+            System.out.println("There was an error deleting the directory on the remote server. See the message above.");
+            return;
+        }
+        System.out.println("Directory "+removeRemoteDirectory+" removed.");
+    }
+
     public void changeRemotePermissions(ChannelSftp sftpChannel) {
 
         Scanner scanner = new Scanner(System.in);
@@ -178,5 +207,38 @@ public class Commands {
             return;
         }
     }
+
+    public void downloadFile(ChannelSftp sftpChannel) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the path to the file you want to download (relative to current remote directory): ");
+        String readPath = scanner.nextLine().trim();
+        InputStream remoteFile = null;
+        try {
+            remoteFile = sftpChannel.get(readPath);
+        } catch (SftpException ex) {
+            System.err.println(ex.getMessage());
+            System.out.println("An error occurred while trying to get the remote file.");
+            return;
+        }
+        System.out.println("Enter the path to save the file as: ");
+        String writePath = scanner.nextLine().trim();
+        if (writePath.equals("")) {
+            System.out.println("Can't have an empty filename!");
+            return;
+        }
+        File writeFile = new File(this.currentLocalPath + File.separator + writePath);
+        OutputStream fileOut = null;
+        try {
+            fileOut = new FileOutputStream(writeFile);
+            IOUtils.copy(remoteFile, fileOut);
+            fileOut.close();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            System.out.println("error getting file!");
+        }
+    }
+
+
 }
+
 
