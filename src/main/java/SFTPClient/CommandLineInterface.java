@@ -1,5 +1,6 @@
 package SFTPClient;
 
+import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.SftpException;
 
 import java.io.IOException;
@@ -49,8 +50,8 @@ public class CommandLineInterface {
 
 
     public static void main(String ... args) throws IOException {
-
         // instantiate new CLI object
+        new GUI();
         CommandLineInterface mainCLI = new CommandLineInterface();
         System.out.println(mainCLI.getGreeting());  // prints greeting
 
@@ -131,6 +132,7 @@ public class CommandLineInterface {
                 }
                 setCommand();
                 break;
+
         }
     }
 
@@ -178,3 +180,4 @@ public class CommandLineInterface {
     }
 
 }
+
