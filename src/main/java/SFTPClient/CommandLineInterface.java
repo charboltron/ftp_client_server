@@ -14,9 +14,8 @@ public class CommandLineInterface {
     private String password;
     private String host;
 
-
     ArrayList<String> connectionCommands = new ArrayList<String> (Arrays.asList(
-           "dirs", "lsr","lsr -al", "lsl", "cdr", "cdl", "pwdr", "mkdirr", "chmodr", "dl", "dlm", "ul"));
+            "dirs", "lsr","lsr -al", "lsl", "cdr", "cdl", "pwdr", "mkdirr", "mkdirl", "mvl", "mvr", "rmdirr", "rmr", "chmodr", "dl", "dlm", "ul"));
 
 
     public SFTPConnection ourConnection;
@@ -34,18 +33,20 @@ public class CommandLineInterface {
             "\n\t\tcdr\t\t\t\tchange remote directory" +
             "\n\t\tcdl\t\t\t\tchange local directory" +
             "\n\t\tmvr\t\t\t\trename or move a file or directory on remote server" +
+            "\n\t\tmvl\t\t\t\trename or move a file or directory on local machine" +
             "\n\t\tpwdr\t\t\tprints remote working directory" +
             "\n\t\tpwdl\t\t\tprints local working directory" +
             "\n\t\tmkdirr\t\t\tmake directory on remote server" +
+            "\n\t\tmkdirl\t\t\tmake directory on local machine" +
             "\n\t\trmdirr\t\t\tdelete directory on remote server" +
-            "\n\t\trmr\t\t\tdelete file on remote server" +
+            "\n\t\trmr\t\t\t\tdelete file on remote server" +
             "\n\t\tchmodr\t\t\tchange remote file permissions" +
             "\n\t\tdl\t\t\t\tdownload from current remote directory to current local directory" +
             "\n\t\tdlm\t\t\t\tdownload multiple from current remote directory to current local directory" +
             "\n\t\tul\t\t\t\tupload to current remote directory from current local directory" +
             "\n\t-d\t\tdisconnects SFTP server" +
             "\n\t-q\t\tquit SFTP client interface" +
-            "\n\n\tmore menu options coming soon..."); //Weirdly, this seems to print formatted differently from the terminal than inside IDEA.
+            "\n\n\tmore menu options coming soon..."); //Weirdly, this seems to print formatted differently from the terminal than inside IDEA. It's the ol' tabs vs spaces debate in action...
 
 
     CommandLineInterface(){}

@@ -115,8 +115,6 @@ public class Commands {
             }
         }
     }
-    //    Files.walk(Paths.get(f.getAbsolutePath())).filter(Files::isRegularFile).forEach(System.out::println);
-
 
     public void uploadFiles(ChannelSftp sftpChannel) throws SftpException {
         Scanner scanner = new Scanner(System.in);
@@ -144,6 +142,24 @@ public class Commands {
             return;
         }
         System.out.println("New directory "+newDir+" created!");
+    }
+
+    public void makeLocalDirectory() {
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the name of the directory you want to create: ");
+        String newLocalDir = scanner.nextLine().trim();
+        boolean alreadyExists = (new File(newLocalDir).isDirectory());
+        if(alreadyExists){
+            System.out.println("Error. Existing directory: the directory you are trying to create already exists.");
+            return;
+        }
+        boolean directoryCreated = (new File(newLocalDir)).mkdir();
+        if (directoryCreated) {
+            System.out.println("New local directory "+newLocalDir+" created!");
+        } else {
+            System.out.println("There was a problem creating a new directory");
+        }
     }
 
     public void removeRemoteFile(ChannelSftp sftpChannel) {
@@ -205,6 +221,35 @@ public class Commands {
         }else{sftpChannel.rename(beforeFile, afterFile);
             System.out.println("Rename was successful!");
             return;
+        }
+    }
+
+    public void renameLocalFile() throws IOException {
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the file/path for the file/directory you want to rename: ");
+        String pathOld = scanner.nextLine().trim();
+        File oldLocalFile = new File(pathOld);
+        if (!oldLocalFile.exists()){
+            System.out.println("Error. The file you want to rename doesn't exist! Check your local directory using `dirs` or `lsl`");
+            return;
+        }
+
+        System.out.println("Enter the new name to rename the file/directory as: ");
+        String pathNew = scanner.nextLine().trim();
+        File newLocalFileRename = new File(pathNew);
+
+        if (newLocalFileRename.exists()) {
+            System.out.println("Error. Existing file: there is already a file or directory with the new name you're trying use.");
+            return;
+        }
+
+        oldLocalFile.renameTo(newLocalFileRename);
+
+        if (!oldLocalFile.exists() && newLocalFileRename.exists()) {
+            System.out.println("File successfully renamed!");
+        } else {
+            System.out.println("There was a problem renaming the file.");
         }
     }
 
