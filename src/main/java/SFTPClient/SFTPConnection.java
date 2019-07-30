@@ -96,17 +96,32 @@ public class SFTPConnection {
             case("mkdirr"):
                 cmd.makeRemoteDirectory(sftpChannel);
                 break;
+            case("mkdirl"):
+                cmd.makeLocalDirectory();
+                break;
+            case("rmdirr"):
+                cmd.removeRemoteDirectory(sftpChannel);
+                break;
+            case("rmr"):
+                cmd.removeRemoteFile(sftpChannel);
+                break;
             case("chmodr"):
                 cmd.changeRemotePermissions(sftpChannel);
                 break;
             case("mvr"):
                 cmd.renameRemoteFile(sftpChannel);
                 break;
+            case("mvl"):
+                cmd.renameLocalFile();
+                break;
             case("ul"):
                 cmd.uploadFiles(sftpChannel);
                 break;
             case("dl"):
-                System.out.println("Unimplemented method: Download file from remote");
+                cmd.downloadFile(sftpChannel);
+                break;
+            case("dlm"):
+                cmd.downloadMultipleFiles(sftpChannel);
                 break;
             default:
                 System.out.println("Command not recognized, enter '-help' for a list of available options");
