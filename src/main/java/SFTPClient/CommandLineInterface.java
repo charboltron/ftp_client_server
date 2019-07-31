@@ -124,6 +124,9 @@ public class CommandLineInterface {
                 }
 
             case("-q"):
+                if(ourConnection != null && ourConnection.session.isConnected()) {
+                  ourConnection.disconnect();   // This check isn't strictly necessary, but it will stop errors from being thrown server side if the server side is poorly configured or extremely pedantic.
+                }
                 System.out.println("Goodbye!");
                 System.exit(0);
                 break;
