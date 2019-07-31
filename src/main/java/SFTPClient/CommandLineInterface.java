@@ -23,11 +23,13 @@ public class CommandLineInterface {
     public SFTPConnection ourConnection;
 
     private StringBuilder greeting = new StringBuilder("Welcome to the SFTP Client interface." +
-            "\n\tEnter '-help to a list of available commands" +
-            "\n\tor enter '-c' to connect...");
+            "\n\tEnter '-help' to list available commands, " +
+            "\n\t'-c' to connect, or " +
+            "\n\t'-gui' to start the GUI");
     public StringBuilder menu = new StringBuilder("THIS IS THE MENU:" +
             "\n\t-help\tprints help menu" +
             "\n\t-c\t\tconnects SFTP server" +
+            "\n\t-gui\t\tstarts GUI" +
             "\n\t\tdirs\t\t\tprints both local and remote working directories"+
             "\n\t\tlsr\t\t\t\tlists contents of current remote directory" +
             "\n\t\tlsr -al\t\t\tlists contents of current remote directory with permissions" +
@@ -53,7 +55,6 @@ public class CommandLineInterface {
 
     public static void main(String ... args) throws IOException {
         // instantiate new CLI object
-        new GUI();
         CommandLineInterface mainCLI = new CommandLineInterface();
         System.out.println(mainCLI.getGreeting());  // prints greeting
 
@@ -109,6 +110,10 @@ public class CommandLineInterface {
                     }
                     break;
                 }
+            case("-gui"):
+                new GUI();
+                setCommand();
+                break;
             case("-d"):
                 if(ourConnection != null && ourConnection.session.isConnected()){
                     ourConnection.disconnect();
