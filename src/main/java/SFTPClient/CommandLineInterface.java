@@ -116,6 +116,7 @@ public class CommandLineInterface {
                 if(ourConnection != null && ourConnection.session.isConnected()){
                     ourConnection.disconnect();
                     System.out.println("Connection disconnected, enter '-q' to quit or '-help' to see available options\n");
+                    ourConnection.timerCancel();
                     setCommand();
                     break;
                 }

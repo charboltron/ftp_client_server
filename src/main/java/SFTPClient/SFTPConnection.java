@@ -133,4 +133,6 @@ public class SFTPConnection {
     public void idleWake(){
         idleTimer.idleWake();
     }
+
+    public void timerCancel() {idleTimer.cancel();}
 }

@@ -13,7 +13,8 @@ public class IdleTimer {
     private long idleTime;
     long delay  = 1000L;
     long period = 1000L;
-    private static long ACCEPTABLE_IDLE_TIME = 5000;
+    private static long ACCEPTABLE_IDLE_TIME = 10000; // 10 secs
+    private Timer ducks = new Timer();
 
     IdleTimer(SFTPConnection sftpConnection){
         this.sftpConnection = sftpConnection;
@@ -21,7 +22,7 @@ public class IdleTimer {
     }
 
     public void runIdleTimer(){
-        Timer ducks = new Timer();
+
         TimerTask repeatedTask = new TimerTask() {
             public void run() {
                 newTime = System.currentTimeMillis();
@@ -29,7 +30,7 @@ public class IdleTimer {
                 if (idleTime > ACCEPTABLE_IDLE_TIME){
                     sftpConnection.disconnect();
                     System.out.println("IDLE TIMEOUT: enter '-c' to reconnect or '-help' to see options.");
-                    System.out.println("> ");
+                    System.out.printf("> ");
                     ducks.cancel();
                 }
 
@@ -49,5 +50,7 @@ public class IdleTimer {
     }
 
 
-
+    public void cancel() {
+        ducks.cancel();
+    }
 }
