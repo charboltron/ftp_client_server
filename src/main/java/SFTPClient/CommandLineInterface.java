@@ -16,7 +16,7 @@ public class CommandLineInterface {
     private String host;
     private static String [] argz;
     private static boolean argzbool;
-    private int argzcount = 1;
+    private int argzcount = 0;
 
     private static ArrayList<String> CommandTests = new ArrayList<>((Arrays.asList("@Test_help", "@Test_quit", "@Test_disconnect_no_connect", "@Test_disconnect_connected")));
 
@@ -84,7 +84,7 @@ public class CommandLineInterface {
         switch(command){
             case ("-help"):
                 System.out.println(getMenu());
-                if(argz[0].equals("@Test_help")){
+                if(argzbool && argz[0].equals("@Test_help")){
                     System.exit(0);
                 }
                 setCommand();
@@ -161,8 +161,7 @@ public class CommandLineInterface {
     public void setCommand(){
 
         if (argzbool && CommandTests.contains(argz[0])){
-            command = argz[argzcount];
-            argzcount++;
+            command = argz[1];
             return;
         }
 
@@ -180,18 +179,18 @@ public class CommandLineInterface {
     }
 
     public void setUserNameAndPassword(){
-        Scanner input = new Scanner(System.in);
-        System.out.println("Host: ");
-        host = input.nextLine();
-        System.out.println("Username: ");
-        userName = input.nextLine();
-        System.out.println("Password: ");
-        password = input.nextLine();
-
-        //Hardcoded for ease of testing. Feel free to uncomment if you prefer to enter manually.
-//        host = "104.248.67.51"; //Hard-coded for now
-//        userName = "agilesftp";
-//        password = "SimpleAndSecureFileTransferProtocol";
+//        Scanner input = new Scanner(System.in);
+//        System.out.println("Host: ");
+//        host = input.nextLine();
+//        System.out.println("Username: ");
+//        userName = input.nextLine();
+//        System.out.println("Password: ");
+//        password = input.nextLine();
+//
+//        Hardcoded for ease of testing. Feel free to uncomment if you prefer to enter manually.
+        host = "104.248.67.51"; //Hard-coded for now
+        userName = "agilesftp";
+        password = "SimpleAndSecureFileTransferProtocol";
 
     }
 
