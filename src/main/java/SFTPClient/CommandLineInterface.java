@@ -89,10 +89,11 @@ public class CommandLineInterface {
                 else{
                     System.out.println("Connection successful! Enjoy your files, stupid.");
                     setCommand();
+                    ourConnection.idleWake();
                     while(true){
                         if(getCommand().charAt(0) == '-'){
                             if(getCommand().equals("-help")){
-                                System.out.println(getMenu()); setCommand();
+                                System.out.println(getMenu()); setCommand(); ourConnection.idleWake();
                             }
                             else{
                                 break;
@@ -107,6 +108,7 @@ public class CommandLineInterface {
                             System.out.println("Something went wrong, see the message above. Please try another command.");
                         }
                         setCommand();
+                        ourConnection.idleWake();
                     }
                     break;
                 }
@@ -114,6 +116,7 @@ public class CommandLineInterface {
                 if(ourConnection != null && ourConnection.session.isConnected()){
                     ourConnection.disconnect();
                     System.out.println("Connection disconnected, enter '-q' to quit or '-help' to see available options\n");
+                    ourConnection.timerCancel();
                     setCommand();
                     break;
                 }

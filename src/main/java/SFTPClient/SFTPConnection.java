@@ -13,6 +13,7 @@ public class SFTPConnection {
     Session session = null;
     ChannelSftp sftpChannel = null;
     Commands cmd;
+    private final IdleTimer idleTimer = new IdleTimer(this);
 
     SFTPConnection(String username, String host, String pwd){
 
@@ -25,6 +26,8 @@ public class SFTPConnection {
     public void connect(){
 
         try {
+
+            idleTimer.runIdleTimer();
             JSch jsch = new JSch(); //Creates a class object of JSch which allows us to access a server over sftp
             session = jsch.getSession(username, host, PORT); //returns a session object
             session.setPassword(pwd);
@@ -126,4 +129,10 @@ public class SFTPConnection {
 
         }
     }
+
+    public void idleWake(){
+        idleTimer.idleWake();
+    }
+
+    public void timerCancel() {idleTimer.cancel();}
 }
