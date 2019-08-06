@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-/**
- * {@link CommandLineInterface} provides a command line interface for the SFTP server client.
- *
- */
 public class CommandLineInterface {
 
     private String command;
@@ -55,11 +51,7 @@ public class CommandLineInterface {
 
     CommandLineInterface(){}
 
-    /**
-     * The {@link CommandLineInterface} main method instantiates a CLI object and passes the arguments from the command line using the setCommand method.
-     * @param args        Any of the arguments specified in the menu printed by main.
-     * @throws IOException
-     */
+
     public static void main(String ... args) throws IOException {
 
         // instantiate new CLI object
@@ -77,11 +69,7 @@ public class CommandLineInterface {
         }
     }
 
-    /**
-     *  The <code>ftpClientManager</code> is passed the command variable set by the setCommand method, which it compares against the allowable switch cases.  ; only -help, -c, -d, -q are explicitly for, everything else falls into the <code>getCommand</code> method for evaluation.
-     * @param command       Any of the allowable commands from the menu.
-     * @throws IOException
-     */
+
     public void ftpClientManager(String command) throws IOException {
 
         switch(command){
@@ -150,17 +138,10 @@ public class CommandLineInterface {
         }
     }
 
-    /**
-     * <code>getMenu</code> prints the menu options on the command line when invoked.
-     * @return          the contents of the menu StringBuilder object, cast to a string.
-     */
     public String getMenu(){
         return menu.toString();
     }
 
-    /**
-     * <code>setCommand</code> takes user input from the command line, and saves it into the command variable.
-     */
     public void setCommand(){
         System.out.printf("> ");
         Scanner input = new Scanner(System.in);
@@ -168,25 +149,14 @@ public class CommandLineInterface {
         // input.close();
     }
 
-    /**
-     * <code>getCommand</code> accesses the command variable saved by setCommand so it can be used in ftpClientManager and commandsManager.
-     * @return      the contents of the command variable as a trimmed string
-     */
     public String getCommand(){
         return command.trim();
     }
 
-    /**
-     * <code>getGreeting</code> accesses the contents of the StringBuilder 'greeting' and displays them when the CLI is instantiated.
-     * @return       the contents of the greeting variable, cast to a string
-     */
     public String getGreeting(){
         return greeting.toString();
     }
 
-    /**
-     * <code>setUserNameAndPassword</code> takes in the host name, username and password as input on the command line, and saves them to appropriate variables for use by the ftpClientManager method.
-     */
     public void setUserNameAndPassword(){
         //Scanner input = new Scanner(System.in);
         //System.out.println("Host: ");
@@ -203,19 +173,10 @@ public class CommandLineInterface {
 
     }
 
-    /**
-     * <code>getUsername</code> provides an access method for the user name variable as necessary.
-     * @return      a string containing the contents of the userName variable
-     */
     public String getUsername(){
         return userName;
     }
 
-    /**
-     * The <code>getPassword</code> mathod provides an access method for the password
-     * variable as necessary.
-     * @return      a string containing the contents of the password variable
-     */
     public String getPassword(){
         return password;
     }
