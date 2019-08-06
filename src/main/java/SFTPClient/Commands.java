@@ -6,6 +6,9 @@ import java.io.*;
 //import java.lang.invoke.DirectMethodHandle$Holder;
 import java.util.*;
 import org.apache.commons.io.IOUtils;
+
+import javax.sound.midi.Soundbank;
+
 /**
  * * @param args
  */
@@ -18,12 +21,13 @@ public class Commands {
     public void changeLocalDirectory() throws IOException {
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter directory name: ");
+        System.out.println("Current local path: "+currentLocalPath);
+        System.out.println("Enter directory name relative to above: ");
         File temp = null;
         String directoryPath = scanner.nextLine().trim();
         temp = new File(currentLocalPath +File.separator+directoryPath);
         if(!temp.isDirectory()) {
-            System.out.println("The directory you tried to change to does not exist.");
+            System.out.println("The directory you tried to change to does not exist or invalid relative path.");
             return;
         } else {
             currentLocalPath = new File(temp.getCanonicalPath());
@@ -33,8 +37,9 @@ public class Commands {
 
     public static void changeRemoteDirectory(ChannelSftp sftpChannel) throws SftpException {
 
+        System.out.println("Current remote path: "+sftpChannel.pwd());
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter directory name: ");
+        System.out.println("Enter directory name relative to above: ");
         String directoryPath = scanner.nextLine().trim();
         sftpChannel.cd(directoryPath);
         System.out.println("Remote directory: "+directoryPath);

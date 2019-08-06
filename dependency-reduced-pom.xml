@@ -90,6 +90,19 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>edu.pdx.cs410J</groupId>
+      <artifactId>projects</artifactId>
+      <version>Summer2019</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>2.0.2-beta</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <properties>
     <maven.compiler.target>1.7</maven.compiler.target>

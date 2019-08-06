@@ -22,19 +22,19 @@ public class SFTPConnection {
         this.cmd = new Commands();
     }
 
-    public void connect(){
+    public void connect(JSch jsch){
 
         try {
-            JSch jsch = new JSch(); //Creates a class object of JSch which allows us to access a server over sftp
+            //jsch = new JSch(); //Creates a class object of JSch which allows us to access a server over sftp
             session = jsch.getSession(username, host, PORT); //returns a session object
             session.setPassword(pwd);
-            session.setConfig("StrictHostKeyChecking", "no"); //may want to investigate this
+            session.setConfig("StrictHostKeyChecking", "no");
             System.out.println("Establishing Connection with " + host + "...");
-            session.connect();
+            session.connect(500);
             System.out.println("Connection established!");
             System.out.println("Creating SFTP Channel...");
             sftpChannel = (ChannelSftp) session.openChannel("sftp");
-            sftpChannel.connect();
+            sftpChannel.connect(500);
             System.out.println("SFTP Channel created!");
 
         } catch (JSchException e) {

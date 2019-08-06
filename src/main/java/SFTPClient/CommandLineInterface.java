@@ -1,5 +1,6 @@
 package SFTPClient;
 
+import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.SftpException;
 
 import java.io.IOException;
@@ -13,6 +14,11 @@ public class CommandLineInterface {
     private String userName;
     private String password;
     private String host;
+    private static String [] argz;
+    private static boolean argzbool;
+    private int argzcount = 1;
+
+    private static ArrayList<String> CommandTests = new ArrayList<>((Arrays.asList("@Test_help", "@Test_quit", "@Test_disconnect_no_connect", "@Test_disconnect_connected")));
 
     ArrayList<String> connectionCommands = new ArrayList<String> (Arrays.asList(
             "dirs", "lsr","lsr -al", "lsl", "cdr", "cdl", "pwdr", "mkdirr", "mkdirl", "mvl", "mvr", "rmdirr", "rmr", "chmodr", "dl", "dlm", "ul"));
@@ -54,10 +60,13 @@ public class CommandLineInterface {
 
     public static void main(String ... args) throws IOException {
 
+        if(args.length!=0){argz = args; argzbool=true;}
         // instantiate new CLI object
         CommandLineInterface mainCLI = new CommandLineInterface();
         System.out.println(mainCLI.getGreeting());  // prints greeting
-
+        if(argzbool && argz[0].equals("@Test_greeting")){
+            System.exit(0);
+        }
         // retrieves command option from System.in
         mainCLI.setCommand();
 
@@ -75,12 +84,16 @@ public class CommandLineInterface {
         switch(command){
             case ("-help"):
                 System.out.println(getMenu());
+                if(argz[0].equals("@Test_help")){
+                    System.exit(0);
+                }
                 setCommand();
                 break;
             case ("-c"):
                 setUserNameAndPassword();
                 ourConnection = new SFTPConnection(getUsername(), host, getPassword());
-                ourConnection.connect();
+                JSch jsch = new JSch(); //alright so you might be wondering why the hell. Well, the reason is Mockito. It was the only way I could get it going
+                ourConnection.connect(jsch);
                 if (!ourConnection.isConnected()){
                     System.out.println("Failed to connect, please try again.");
                     setCommand();
@@ -103,8 +116,8 @@ public class CommandLineInterface {
 
                         }
                         catch(SftpException shit){ // if SftpException thrown, print exception, followed by help message, then retrieve new command after disconnecting from SFTP server
-                            System.err.println(shit.getMessage());
-                            System.out.println("Something went wrong, see the message above. Please try another command.");
+                            System.err.println(shit.getMessage()); //lol this variable is still named this
+                            System.err.println("Something went wrong, see the message above. Please try another command.");
                         }
                         setCommand();
                     }
@@ -119,7 +132,10 @@ public class CommandLineInterface {
                 }
                 else{
                     System.out.println("No connection to disconnect. Enter '-c' to connect, '-q' to quit, or '-help' to see available options\n");
-                    setCommand();
+                    if(argzbool && argz[0].equals("@Test_disconnect_no_connect")){
+                        System.exit(0);
+                    }
+                        setCommand();
                     break;
                 }
 
@@ -143,10 +159,16 @@ public class CommandLineInterface {
     }
 
     public void setCommand(){
+
+        if (argzbool && CommandTests.contains(argz[0])){
+            command = argz[argzcount];
+            argzcount++;
+            return;
+        }
+
         System.out.printf("> ");
         Scanner input = new Scanner(System.in);
         command = input.nextLine();
-        // input.close();
     }
 
     public String getCommand(){
@@ -158,18 +180,18 @@ public class CommandLineInterface {
     }
 
     public void setUserNameAndPassword(){
-        //Scanner input = new Scanner(System.in);
-        //System.out.println("Host: ");
-        //host = input.nextLine();
-        //System.out.println("Username: ");
-        //userName = input.nextLine();
-        //System.out.println("Password: ");
-        //password = input.nextLine();
+        Scanner input = new Scanner(System.in);
+        System.out.println("Host: ");
+        host = input.nextLine();
+        System.out.println("Username: ");
+        userName = input.nextLine();
+        System.out.println("Password: ");
+        password = input.nextLine();
 
         //Hardcoded for ease of testing. Feel free to uncomment if you prefer to enter manually.
-        host = "104.248.67.51"; //Hard-coded for now
-        userName = "agilesftp";
-        password = "SimpleAndSecureFileTransferProtocol";
+//        host = "104.248.67.51"; //Hard-coded for now
+//        userName = "agilesftp";
+//        password = "SimpleAndSecureFileTransferProtocol";
 
     }
 
