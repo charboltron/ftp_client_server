@@ -1,3 +1,3 @@
-FTBClient/AppTest.class
-FTBClient/CLITests.class
-FTBClient/SFTPConnectTest.class
+SFTPClient/SFTPConnectTest.class
+SFTPClient/AppTest.class
+SFTPClient/SFTPClientTest.class

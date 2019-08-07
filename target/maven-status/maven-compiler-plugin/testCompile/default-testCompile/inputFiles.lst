@@ -1,3 +1,4 @@
-/Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server/src/test/java/FTBClient/SFTPConnectTest.java
-/Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server/src/test/java/FTBClient/AppTest.java
-/Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server/src/test/java/FTBClient/CLITests.java
+/Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server/src/test/java/SFTPClient/AppTest.java
+/Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server/src/test/java/SFTPClient/SFTPConnectTest.java
+/Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server/src/test/java/SFTPClient/SFTPClientTest.java
+/Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server/src/test/java/SFTPClient/CLITests.java
