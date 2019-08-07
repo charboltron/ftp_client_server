@@ -61,7 +61,7 @@ public class CommandLineInterface {
     CommandLineInterface(){}
 
     /**
-     * The {@link CommandLineInterface} main method instantiates a CLI object and passes the arguments from the command line using the setCommand method.
+     * The {@link CommandLineInterface} <code>main</code> method instantiates a CLI object and passes the arguments from the command line using the setCommand method.
      * @param args        Any of the arguments specified in the menu printed by main.
      * @throws IOException
      */

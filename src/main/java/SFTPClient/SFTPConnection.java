@@ -6,7 +6,11 @@ import java.io.IOException;
 //import java.lang.invoke.DirectMethodHandle$Holder;
 
 /**
- * {@link SFTPConnection} contains the code to create a new SFTP session, connect and disconnect.  It also contains commandsManager method, which gives the client additional functionality.
+ * {@link SFTPConnection} contains the code to create a new SFTP session, connect and
+ * disconnect.  It also contains commandsManager method, which gives the client
+ * additional functionality.  And it instantiates an {@link IdleTimer} object, which will
+ * cause the connection to time out after a predetermined amount of time if no
+ * input is received.
  */
 public class SFTPConnection {
 
@@ -160,9 +164,19 @@ public class SFTPConnection {
         }
     }
 
+    /**
+     * The <code>idleWake</code> method is invoked on an SFTPConnection object by the
+     * {@link CommandLineInterface} class when it receives input.
+     */
     public void idleWake(){
         idleTimer.idleWake();
     }
 
-    public void timerCancel() {idleTimer.cancel();}
+    /**
+     * The <code>timerCancel</code> method is invoked on an SFTPConnection object by the
+     * {@link CommandLineInterface} class when it receives input.
+     */
+    public void timerCancel() {
+        idleTimer.cancel();
+    }
 }
