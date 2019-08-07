@@ -1,3 +1,5 @@
-SFTPClient/CommandLineInterface.class
+SFTPClient/IdleTimer.class
 SFTPClient/Commands.class
+SFTPClient/IdleTimer$1.class
+SFTPClient/CommandLineInterface.class
 SFTPClient/SFTPConnection.class

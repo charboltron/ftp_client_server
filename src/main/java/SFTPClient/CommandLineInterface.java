@@ -1,5 +1,6 @@
 package SFTPClient;
 
+import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.SftpException;
 
 import java.io.IOException;
@@ -17,6 +18,10 @@ public class CommandLineInterface {
     private String userName;
     private String password;
     private String host;
+    private static String [] argz;
+    private static boolean argzbool;
+
+    private static ArrayList<String> CommandTests = new ArrayList<>((Arrays.asList("@Test_help", "@Test_quit", "@Test_disconnect_no_connect", "@Test_disconnect_connected")));
 
     ArrayList<String> connectionCommands = new ArrayList<String> (Arrays.asList(
             "dirs", "lsr","lsr -al", "lsl", "cdr", "cdl", "pwdr", "mkdirr", "mkdirl", "mvl", "mvr", "rmdirr", "rmr", "chmodr", "dl", "dlm", "ul"));
@@ -62,9 +67,14 @@ public class CommandLineInterface {
      */
     public static void main(String ... args) throws IOException {
 
+
+        if(args.length!=0){argz = args; argzbool=true;}
         // instantiate new CLI object
         CommandLineInterface mainCLI = new CommandLineInterface();
         System.out.println(mainCLI.getGreeting());  // prints greeting
+        if(argzbool && argz[0].equals("@Test_greeting")){
+            System.exit(0);
+        }
 
         // retrieves command option from System.in
         mainCLI.setCommand();
@@ -87,12 +97,16 @@ public class CommandLineInterface {
         switch(command){
             case ("-help"):
                 System.out.println(getMenu());
+                if(argzbool && argz[0].equals("@Test_help")){
+                    System.exit(0);
+                }
                 setCommand();
                 break;
             case ("-c"):
                 setUserNameAndPassword();
                 ourConnection = new SFTPConnection(getUsername(), host, getPassword());
-                ourConnection.connect();
+                JSch jsch = new JSch(); //alright so you might be wondering why the hell. Well, the reason is Mockito. It was the only way I could get it going
+                ourConnection.connect(jsch);
                 if (!ourConnection.isConnected()){
                     System.out.println("Failed to connect, please try again.");
                     setCommand();
@@ -134,6 +148,9 @@ public class CommandLineInterface {
                 }
                 else{
                     System.out.println("No connection to disconnect. Enter '-c' to connect, '-q' to quit, or '-help' to see available options\n");
+                    if(argzbool && argz[0].equals("@Test_disconnect_no_connect")){
+                        System.exit(0);
+                    }
                     setCommand();
                     break;
                 }
@@ -168,6 +185,12 @@ public class CommandLineInterface {
      * <code>setCommand</code> takes user input from the command line, and saves it into the command variable.
      */
     public void setCommand(){
+
+        if (argzbool && CommandTests.contains(argz[0])){
+            command = argz[1];
+            return;
+        }
+
         System.out.printf("> ");
         Scanner input = new Scanner(System.in);
         command = input.nextLine();
@@ -194,18 +217,13 @@ public class CommandLineInterface {
      * <code>setUserNameAndPassword</code> takes in the host name, username and password as input on the command line, and saves them to appropriate variables for use by the ftpClientManager method.
      */
     public void setUserNameAndPassword(){
-        //Scanner input = new Scanner(System.in);
-        //System.out.println("Host: ");
-        //host = input.nextLine();
-        //System.out.println("Username: ");
-        //userName = input.nextLine();
-        //System.out.println("Password: ");
-        //password = input.nextLine();
-
-        //Hardcoded for ease of testing. Feel free to uncomment if you prefer to enter manually.
-        host = "104.248.67.51"; //Hard-coded for now
-        userName = "agilesftp";
-        password = "SimpleAndSecureFileTransferProtocol";
+        Scanner input = new Scanner(System.in);
+        System.out.println("Host: ");
+        host = input.nextLine();
+        System.out.println("Username: ");
+        userName = input.nextLine();
+        System.out.println("Password: ");
+        password = input.nextLine();
 
     }
 

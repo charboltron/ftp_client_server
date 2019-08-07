@@ -4,7 +4,7 @@
     <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
     <property name="java.specification.version" value="12"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
-    <property name="java.class.path" value="/Users/aidanwolfe/Documents/Grad School/Summer2019/Agile/ftp_client_server/target/test-classes:/Users/aidanwolfe/Documents/Grad School/Summer2019/Agile/ftp_client_server/target/classes:/Users/aidanwolfe/.m2/repository/com/jcraft/jsch/0.1.55/jsch-0.1.55.jar:/Users/aidanwolfe/.m2/repository/junit/junit/4.11/junit-4.11.jar:/Users/aidanwolfe/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/aidanwolfe/.m2/repository/commons-net/commons-net/3.6/commons-net-3.6.jar:"/>
+    <property name="java.class.path" value="/Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server/target/test-classes:/Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server/target/classes:/Users/charlesbolton/.m2/repository/com/jcraft/jsch/0.1.55/jsch-0.1.55.jar:/Users/charlesbolton/.m2/repository/junit/junit/4.11/junit-4.11.jar:/Users/charlesbolton/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/charlesbolton/.m2/repository/edu/pdx/cs410J/projects/Summer2019/projects-Summer2019-tests.jar:/Users/charlesbolton/.m2/repository/org/mockito/mockito-all/2.0.2-beta/mockito-all-2.0.2-beta.jar:/Users/charlesbolton/.m2/repository/commons-net/commons-net/3.6/commons-net-3.6.jar:/Users/charlesbolton/.m2/repository/commons-io/commons-io/2.5/commons-io-2.5.jar:"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.vendor.url" value="https://java.oracle.com/"/>
@@ -13,41 +13,41 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk-12.0.1.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/aidanwolfe/Documents/Grad School/Summer2019/Agile/ftp_client_server/target/surefire/surefirebooter11313197232819602961.jar /Users/aidanwolfe/Documents/Grad School/Summer2019/Agile/ftp_client_server/target/surefire 2019-07-23T15-23-44_226-jvmRun1 surefire17995550927935938082tmp surefire_07893615152888087860tmp"/>
+    <property name="sun.java.command" value="/Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server/target/surefire/surefirebooter13544799979999132354.jar /Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server/target/surefire 2019-08-06T17-01-21_078-jvmRun1 surefire9314488628885150089tmp surefire_011975917392205318228tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="/Users/aidanwolfe/Documents/Grad School/Summer2019/Agile/ftp_client_server/target/test-classes:/Users/aidanwolfe/Documents/Grad School/Summer2019/Agile/ftp_client_server/target/classes:/Users/aidanwolfe/.m2/repository/com/jcraft/jsch/0.1.55/jsch-0.1.55.jar:/Users/aidanwolfe/.m2/repository/junit/junit/4.11/junit-4.11.jar:/Users/aidanwolfe/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/aidanwolfe/.m2/repository/commons-net/commons-net/3.6/commons-net-3.6.jar:"/>
+    <property name="surefire.test.class.path" value="/Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server/target/test-classes:/Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server/target/classes:/Users/charlesbolton/.m2/repository/com/jcraft/jsch/0.1.55/jsch-0.1.55.jar:/Users/charlesbolton/.m2/repository/junit/junit/4.11/junit-4.11.jar:/Users/charlesbolton/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/charlesbolton/.m2/repository/edu/pdx/cs410J/projects/Summer2019/projects-Summer2019-tests.jar:/Users/charlesbolton/.m2/repository/org/mockito/mockito-all/2.0.2-beta/mockito-all-2.0.2-beta.jar:/Users/charlesbolton/.m2/repository/commons-net/commons-net/3.6/commons-net-3.6.jar:/Users/charlesbolton/.m2/repository/commons-io/commons-io/2.5/commons-io-2.5.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
-    <property name="user.home" value="/Users/aidanwolfe"/>
+    <property name="user.home" value="/Users/charlesbolton"/>
     <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="java.version.date" value="2019-04-16"/>
     <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk-12.0.1.jdk/Contents/Home"/>
     <property name="file.separator" value="/"/>
-    <property name="basedir" value="/Users/aidanwolfe/Documents/Grad School/Summer2019/Agile/ftp_client_server"/>
+    <property name="basedir" value="/Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="line.separator" value="&#10;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="/Users/aidanwolfe/Documents/Grad School/Summer2019/Agile/ftp_client_server/target/surefire/surefirebooter11313197232819602961.jar"/>
+    <property name="surefire.real.class.path" value="/Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server/target/surefire/surefirebooter13544799979999132354.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="12.0.1+12"/>
-    <property name="user.name" value="aidanwolfe"/>
+    <property name="user.name" value="charlesbolton"/>
     <property name="path.separator" value=":"/>
-    <property name="os.version" value="10.14.5"/>
+    <property name="os.version" value="10.13.3"/>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
-    <property name="localRepository" value="/Users/aidanwolfe/.m2/repository"/>
+    <property name="localRepository" value="/Users/charlesbolton/.m2/repository"/>
     <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
-    <property name="java.io.tmpdir" value="/var/folders/cv/7cvtfh0d4jz5_1tl981jklbw0000gn/T/"/>
+    <property name="java.io.tmpdir" value="/var/folders/bt/kwnhgfss6qq0s264v7hj_tlm0000gn/T/"/>
     <property name="java.version" value="12.0.1"/>
-    <property name="user.dir" value="/Users/aidanwolfe/Documents/Grad School/Summer2019/Agile/ftp_client_server"/>
+    <property name="user.dir" value="/Users/charlesbolton/Desktop/PSU/510_Agile/ftp_client_server"/>
     <property name="os.arch" value="x86_64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="java.library.path" value="/Users/aidanwolfe/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.library.path" value="/Users/charlesbolton/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
     <property name="java.vm.info" value="mixed mode, sharing"/>
     <property name="java.vendor" value="Oracle Corporation"/>
     <property name="java.vm.version" value="12.0.1+12"/>
@@ -55,5 +55,5 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="56.0"/>
   </properties>
-  <testcase name="shouldAnswerWithTrue" classname="SFTPClient.AppTest" time="0.002"/>
+  <testcase name="shouldAnswerWithTrue" classname="SFTPClient.AppTest" time="0.001"/>
 </testsuite>
