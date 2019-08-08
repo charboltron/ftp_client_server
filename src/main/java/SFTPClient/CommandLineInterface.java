@@ -8,12 +8,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * {@link CommandLineInterface} provides a command line interface for the SFTP server client.
+ *
+ */
 public class CommandLineInterface {
 
     private String command;
     private String userName;
     private String password;
     private String host;
+    private static String [] argz;
+    private static boolean argzbool;
+
+    private static ArrayList<String> CommandTests = new ArrayList<>((Arrays.asList("@Test_help", "@Test_quit", "@Test_disconnect_no_connect", "@Test_disconnect_connected")));
 
     ArrayList<String> connectionCommands = new ArrayList<String> (Arrays.asList(
             "dirs", "lsr","lsr -al", "lsl", "cdr", "cdl", "pwdr", "mkdirr", "mkdirl", "mvl", "mvr", "rmdirr", "rmr", "chmodr", "dl", "dlm", "ul"));
@@ -54,11 +62,18 @@ public class CommandLineInterface {
 
     CommandLineInterface(){}
 
-
+    /**
+     * The {@link CommandLineInterface} main method instantiates a CLI object and passes the arguments from the command line using the setCommand method.
+     * @param args        Any of the arguments specified in the menu printed by main.
+     * @throws IOException
+     */
     public static void main(String ... args) throws IOException {
         // instantiate new CLI object
         CommandLineInterface mainCLI = new CommandLineInterface();
         System.out.println(mainCLI.getGreeting());  // prints greeting
+        if(argzbool && argz[0].equals("@Test_greeting")){
+            System.exit(0);
+        }
 
         // retrieves command option from System.in
         mainCLI.setCommand();
@@ -71,18 +86,26 @@ public class CommandLineInterface {
         }
     }
 
-
+    /**
+     *  The <code>ftpClientManager</code> is passed the command variable set by the setCommand method, which it compares against the allowable switch cases.  ; only -help, -c, -d, -q are explicitly for, everything else falls into the <code>getCommand</code> method for evaluation.
+     * @param command       Any of the allowable commands from the menu.
+     * @throws IOException
+     */
     public void ftpClientManager(String command) throws IOException {
 
         switch(command){
             case ("-help"):
                 System.out.println(getMenu());
+                if(argzbool && argz[0].equals("@Test_help")){
+                    System.exit(0);
+                }
                 setCommand();
                 break;
             case ("-c"):
                 setUserNameAndPassword();
                 ourConnection = new SFTPConnection(getUsername(), host, getPassword());
-                ourConnection.connect();
+                JSch jsch = new JSch(); //alright so you might be wondering why the hell. Well, the reason is Mockito. It was the only way I could get it going
+                ourConnection.connect(jsch);
                 if (!ourConnection.isConnected()){
                     System.out.println("Failed to connect, please try again.");
                     setCommand();
@@ -91,10 +114,11 @@ public class CommandLineInterface {
                 else{
                     System.out.println("Connection successful! Enjoy your files, stupid.");
                     setCommand();
+                    ourConnection.idleWake();
                     while(true){
                         if(getCommand().charAt(0) == '-'){
                             if(getCommand().equals("-help")){
-                                System.out.println(getMenu()); setCommand();
+                                System.out.println(getMenu()); setCommand(); ourConnection.idleWake();
                             }
                             else{
                                 break;
@@ -109,6 +133,7 @@ public class CommandLineInterface {
                             System.out.println("Something went wrong, see the message above. Please try another command.");
                         }
                         setCommand();
+                        ourConnection.idleWake();
                     }
                     break;
                 }
@@ -120,16 +145,23 @@ public class CommandLineInterface {
                 if(ourConnection != null && ourConnection.session.isConnected()){
                     ourConnection.disconnect();
                     System.out.println("Connection disconnected, enter '-q' to quit or '-help' to see available options\n");
+                    ourConnection.timerCancel();
                     setCommand();
                     break;
                 }
                 else{
                     System.out.println("No connection to disconnect. Enter '-c' to connect, '-q' to quit, or '-help' to see available options\n");
+                    if(argzbool && argz[0].equals("@Test_disconnect_no_connect")){
+                        System.exit(0);
+                    }
                     setCommand();
                     break;
                 }
 
             case("-q"):
+                if(ourConnection != null && ourConnection.session.isConnected()) {
+                  ourConnection.disconnect();   // This check isn't strictly necessary, but it will stop errors from being thrown server side if the server side is poorly configured or extremely pedantic.
+                }
                 System.out.println("Goodbye!");
                 System.exit(0);
                 break;
@@ -145,45 +177,73 @@ public class CommandLineInterface {
         }
     }
 
+    /**
+     * <code>getMenu</code> prints the menu options on the command line when invoked.
+     * @return          the contents of the menu StringBuilder object, cast to a string.
+     */
     public String getMenu(){
         return menu.toString();
     }
 
+    /**
+     * <code>setCommand</code> takes user input from the command line, and saves it into the command variable.
+     */
     public void setCommand(){
+
+        if (argzbool && CommandTests.contains(argz[0])){
+            command = argz[1];
+            return;
+        }
+
         System.out.printf("> ");
         Scanner input = new Scanner(System.in);
         command = input.nextLine();
         // input.close();
     }
 
+    /**
+     * <code>getCommand</code> accesses the command variable saved by setCommand so it can be used in ftpClientManager and commandsManager.
+     * @return      the contents of the command variable as a trimmed string
+     */
     public String getCommand(){
         return command.trim();
     }
 
+    /**
+     * <code>getGreeting</code> accesses the contents of the StringBuilder 'greeting' and displays them when the CLI is instantiated.
+     * @return       the contents of the greeting variable, cast to a string
+     */
     public String getGreeting(){
         return greeting.toString();
     }
 
+    /**
+     * <code>setUserNameAndPassword</code> takes in the host name, username and password as input on the command line, and saves them to appropriate variables for use by the ftpClientManager method.
+     */
     public void setUserNameAndPassword(){
-        //Scanner input = new Scanner(System.in);
-        //System.out.println("Host: ");
-        //host = input.nextLine();
-        //System.out.println("Username: ");
-        //userName = input.nextLine();
-        //System.out.println("Password: ");
-        //password = input.nextLine();
-
-        //Hardcoded for ease of testing. Feel free to uncomment if you prefer to enter manually.
-        host = "104.248.67.51"; //Hard-coded for now
-        userName = "agilesftp";
-        password = "SimpleAndSecureFileTransferProtocol";
+        Scanner input = new Scanner(System.in);
+        System.out.println("Host: ");
+        host = input.nextLine();
+        System.out.println("Username: ");
+        userName = input.nextLine();
+        System.out.println("Password: ");
+        password = input.nextLine();
 
     }
 
+    /**
+     * <code>getUsername</code> provides an access method for the user name variable as necessary.
+     * @return      a string containing the contents of the userName variable
+     */
     public String getUsername(){
         return userName;
     }
 
+    /**
+     * The <code>getPassword</code> mathod provides an access method for the password
+     * variable as necessary.
+     * @return      a string containing the contents of the password variable
+     */
     public String getPassword(){
         return password;
     }
