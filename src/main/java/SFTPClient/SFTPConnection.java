@@ -93,6 +93,9 @@ public class SFTPConnection {
             case("mkdirr"):
                 cmd.makeRemoteDirectory(sftpChannel);
                 break;
+            case("mkdirl"):
+                cmd.makeLocalDirectory();
+                break;
             case("rmdirr"):
                 cmd.removeRemoteDirectory(sftpChannel);
                 break;
@@ -105,11 +108,17 @@ public class SFTPConnection {
             case("mvr"):
                 cmd.renameRemoteFile(sftpChannel);
                 break;
+            case("mvl"):
+                cmd.renameLocalFile();
+                break;
             case("ul"):
                 cmd.uploadFiles(sftpChannel);
                 break;
             case("dl"):
                 cmd.downloadFile(sftpChannel);
+                break;
+            case("dlm"):
+                cmd.downloadMultipleFiles(sftpChannel);
                 break;
             default:
                 System.out.println("Command not recognized, enter '-help' for a list of available options");
