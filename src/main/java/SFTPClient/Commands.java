@@ -474,6 +474,37 @@ public class Commands {
         }
     }
 
+    public void uploadMultipleFiles(ChannelSftp sftpChannel) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter a list of space-separated paths to the file(s) you want to upload (relative to current local directory): ");
+        String userInputListOfFilesLocal = scanner.nextLine().trim();
+        String[] listOfFilesLocal = userInputListOfFilesLocal.split(" ");
+        System.out.println("Enter the path(s) to save the file(s) as (if not specified, will be the same as remote filepath): ");
+        String userInputListOfFilesRemote = scanner.nextLine().trim();
+        String[] listOfFilesRemote = userInputListOfFilesRemote.split(" ");
+        if (listOfFilesLocal.length > listOfFilesRemote.length) {
+            System.out.println("Too many remote filenames specified!");
+            return;
+        }
+        for (int i = 0; i < listOfFilesRemote.length; i++) {
+            String readPath = listOfFilesRemote[i];
+            String writePath = getWritePathFromGivenParams(listOfFilesLocal, listOfFilesRemote, i);
+            downloadFileGivenNameAndPath(sftpChannel, readPath, writePath);
+            try {
+                FileInputStream source = new FileInputStream(currentLocalPath + File.separator + readPath);
+                sftpChannel.put(source, sftpChannel.pwd() + File.separator + writePath);
+            } catch (IOException e) {
+                System.err.println("Unable to find input file");
+                return;
+            } catch (SftpException se) {
+                System.err.println("Unable to connect to server");
+            }
+
+            System.out.println("File "+writePath+" created!");
+
+        }
+    }
+
 }
 
 

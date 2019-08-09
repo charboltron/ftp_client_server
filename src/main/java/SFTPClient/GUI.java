@@ -2,6 +2,7 @@ package SFTPClient;
 
 import com.googlecode.vfsjfilechooser2.VFSJFileChooser;
 import com.googlecode.vfsjfilechooser2.plaf.VFSFileChooserUIAccessorIF;
+import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.SftpException;
 import org.apache.commons.vfs2.VFS;
 
@@ -56,7 +57,8 @@ class GUI extends Frame {
 
     private void connect() {
         ourConnection = new SFTPConnection(nameField.getText(), host, passwordField.getText());
-        ourConnection.connect();
+        JSch jsch = new JSch();
+        ourConnection.connect(jsch);
         if(ourConnection.isConnected()){
             change = getRemoteFiles();
 
