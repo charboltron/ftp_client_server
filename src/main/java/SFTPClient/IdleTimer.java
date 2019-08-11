@@ -13,7 +13,7 @@ public class IdleTimer {
     private long idleTime;
     long delay  = 1000L;
     long period = 1000L;
-    private static long ACCEPTABLE_IDLE_TIME = 10000; // 10 secs
+    private static long ACCEPTABLE_IDLE_TIME = 100000; // 100 secs
     private Timer ducks = new Timer();
 
     IdleTimer(SFTPConnection sftpConnection){
