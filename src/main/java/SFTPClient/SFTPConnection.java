@@ -99,9 +99,8 @@ public class SFTPConnection {
      * @throws IOException      Some of the commands being invoked through commandsManager throw an IOException from java.lang.Exception on failure.
      */
     public void commandsManager(String command) throws SftpException, IOException {
-
-        LOGGER.log(Level.INFO, "Entering commandsManager");
-
+        
+	LOGGER.log(Level.INFO, "Entering commandsManager");
         switch (command){
             case ("dirs"):
                 System.out.println("Remote directory: "+sftpChannel.pwd());

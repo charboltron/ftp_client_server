@@ -485,9 +485,9 @@ public class Commands {
      * @param fileNameWithPath
      * @return
      */
-    private String getFilenameFromPath(String fileNameWithPath) {
-        String[] filenameWithPathArr = fileNameWithPath.split(File.separator);
-        return filenameWithPathArr[filenameWithPathArr.length - 1];
+    String getFilenameFromPath(String fileNameWithPath) {
+        File f = new File(fileNameWithPath);
+        return f.getName();
     }
 
     /**
@@ -498,7 +498,7 @@ public class Commands {
      * @param i         The max length of a file path
      * @return
      */
-    private String getWritePathFromGivenParams(String[] localF, String[] remoteF, int i) {
+    String getWritePathFromGivenParams(String[] localF, String[] remoteF, int i) {
         if ((localF.length > i) && !(localF[i].equals(""))) {
             return localF[i];
         }
