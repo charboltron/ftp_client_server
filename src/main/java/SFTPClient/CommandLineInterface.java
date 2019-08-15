@@ -231,7 +231,8 @@ public class CommandLineInterface {
      */
     public String getCommand(){
         LOGGER.log(Level.INFO, "Getting command");
-        return command.trim();
+	if (command == null || command.equals("")) return " "; 
+	return command.trim();
     }
 
     /**
