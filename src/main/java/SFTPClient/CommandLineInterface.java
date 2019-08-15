@@ -3,15 +3,30 @@ package SFTPClient;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.SftpException;
 
-import java.io.IOException;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.*;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  * {@link CommandLineInterface} provides a command line interface for the SFTP server client.
  *
  */
+
 public class CommandLineInterface {
 
     private String command;
@@ -20,9 +35,10 @@ public class CommandLineInterface {
     private String host;
     private static String [] argz;
     private static boolean argzbool;
-
+    private static boolean enableLogging = false;
+    private String key = "This is a secret";
     private static ArrayList<String> CommandTests = new ArrayList<>((Arrays.asList("@Test_help", "@Test_quit", "@Test_disconnect_no_connect", "@Test_disconnect_connected")));
-
+    private static final java.util.logging.Logger LOGGER = Logger.getLogger( "Commands" );
     ArrayList<String> connectionCommands = new ArrayList<String> (Arrays.asList(
             "dirs", "lsr","lsr -al", "lsl", "cdr", "cdl", "pwdr", "mkdirr", "mkdirl", "mvl", "mvr", "rmdirr", "rmr", "chmodr", "dl", "dlm", "ul"));
 
@@ -103,7 +119,7 @@ public class CommandLineInterface {
                 setCommand();
                 break;
             case ("-c"):
-                setUserNameAndPassword();
+                setUserNameAndPasswordFromFile();
                 ourConnection = new SFTPConnection(getUsername(), host, getPassword());
                 JSch jsch = new JSch(); //alright so you might be wondering why the hell. Well, the reason is Mockito. It was the only way I could get it going
                 ourConnection.connect(jsch);
@@ -157,7 +173,7 @@ public class CommandLineInterface {
 
             case("-q"):
                 if(ourConnection != null && ourConnection.session.isConnected()) {
-                  ourConnection.disconnect();   // This check isn't strictly necessary, but it will stop errors from being thrown server side if the server side is poorly configured or extremely pedantic.
+                    ourConnection.disconnect();   // This check isn't strictly necessary, but it will stop errors from being thrown server side if the server side is poorly configured or extremely pedantic.
                 }
                 System.out.println("Goodbye!");
                 System.exit(0);
@@ -216,17 +232,145 @@ public class CommandLineInterface {
     /**
      * <code>setUserNameAndPassword</code> takes in the host name, username and password as input on the command line, and saves them to appropriate variables for use by the ftpClientManager method.
      */
-    public void setUserNameAndPassword(){
-        Scanner input = new Scanner(System.in);
-        System.out.println("Host: ");
-        host = input.nextLine();
-        System.out.println("Username: ");
-        userName = input.nextLine();
-        System.out.println("Password: ");
-        password = input.nextLine();
 
+    public void setUserNameAndPasswordFromFile(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("If you would like to use a previous log in type -c, otherwise type -l: ");
+        String answer = input.nextLine();
+        boolean fromFile = false;
+        if(answer.equals("-c")) {
+            fromFile = true;
+        }
+        if(fromFile) {
+
+            LOGGER.log(Level.INFO, "Reading log in information from file");
+            fromFile = printCredientials();
+        }
+
+        if(!fromFile){
+            System.out.println("Host: ");
+            host = input.nextLine();
+            System.out.println("Username: ");
+            userName = input.nextLine();
+            System.out.println("Password: ");
+            password = input.nextLine();
+            System.out.println("Would you like to save your log in information (y/n): ");
+            answer = input.nextLine();
+            if(answer.equals("y"))
+            {
+                writeCredentialsToDisk(host,userName,password);
+            }
+        }
     }
 
+    static void EncryptDecryptFile(int cipherMode, String key, File inputFile, File outputFile){
+        try {
+            LOGGER.log(Level.INFO, "Entering Encrypt/Decrypt");
+            Key secretKey = new SecretKeySpec(key.getBytes(), "AES");
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(cipherMode, secretKey);
+
+            FileInputStream inputStream = new FileInputStream(inputFile);
+            byte[] inputBytes = new byte[(int) inputFile.length()];
+            inputStream.read(inputBytes);
+
+            byte[] outputBytes = cipher.doFinal(inputBytes);
+
+            FileOutputStream outputStream = new FileOutputStream(outputFile);
+            outputStream.write(outputBytes);
+
+            inputStream.close();
+            outputStream.close();
+
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException
+                | InvalidKeyException | BadPaddingException
+                | IllegalBlockSizeException | IOException e) {
+            LOGGER.log(Level.SEVERE, "Error occured while in EncryptDecryptFile");
+            e.printStackTrace();
+        }
+    }
+
+    private List<String[]> readCredentialsFromDisk() {
+        LOGGER.log(Level.SEVERE, "Reading credentials from disk");
+        File secureFile = new File("Connections.txt");
+        File exposedPassword = new File("temp.txt");
+        List<String[]> listOfCreds = new ArrayList<>();
+        synchronized (exposedPassword) {
+            CommandLineInterface.EncryptDecryptFile(Cipher.DECRYPT_MODE, this.key, secureFile, exposedPassword);
+
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(exposedPassword));
+                String tempCreds;
+                while ((tempCreds = br.readLine()) != null) {
+                    String creds[];
+                    creds = tempCreds.split(" ");
+                    for (int i = 0; i < 3; i++) {
+                        listOfCreds.add(creds);
+                    }
+                }
+                br.close();
+            } catch (Exception e) {
+                System.out.println("Something went wrong reading from disk");
+                LOGGER.log(Level.SEVERE, "Something went wrong while reading from file: " + e.getMessage());
+
+            } finally {
+                exposedPassword.delete();
+            }
+            return listOfCreds;
+        }
+    }
+    private boolean printCredientials()
+    {
+            List<String[]> listOfCreds = new ArrayList<>();
+            listOfCreds = readCredentialsFromDisk();
+
+            int logOnAmounts = listOfCreds.size();
+            if(logOnAmounts > 0) {
+                System.out.println("Select the log in you would like to use:");
+                for (int i = 0; i < logOnAmounts; i = i+3) {
+                    String[] creds = listOfCreds.get(i);
+                    System.out.println("[" + (i + 1) + "] " + creds[1] + " : " + creds[0]);
+                }
+                Scanner input = new Scanner(System.in);
+                int intInput = -1;
+                do {
+                    try {
+                        intInput = input.nextInt();
+                        if (intInput < 0 || intInput > logOnAmounts) {
+                            System.out.println("Enter a number between 0 and " + logOnAmounts);
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Enter a valid number please");
+                    }
+                } while (intInput < 0 || intInput > logOnAmounts);
+                //   HOST = listOfCreds.get(intInput)[0]; Uncomment this when we're ready
+                userName = listOfCreds.get(intInput - 1)[1];
+                return true;
+            }else{
+                System.out.println("There are no saved log ons");
+                return false;
+            }
+    }
+
+    private void writeCredentialsToDisk(String HOST,String userName,String password)
+    {
+        try{
+            LOGGER.log( Level.INFO, "Writing log in information to file");
+            File secureFile = new File("Connections.txt");
+            CommandLineInterface.EncryptDecryptFile(Cipher.DECRYPT_MODE,this.key,secureFile,secureFile);
+            FileWriter fw = new FileWriter(secureFile,true);
+            fw.write(HOST+" ");
+            fw.write(userName+" ");
+            fw.write(password+" ");
+            fw.write("/\n");
+            fw.close();
+            CommandLineInterface.EncryptDecryptFile(Cipher.ENCRYPT_MODE,this.key,secureFile,secureFile);
+        }catch (Exception e){
+            System.out.println("Something went wrong writing to a file");
+            LOGGER.log( Level.SEVERE, "Something went wrong while writing to file: "+e.getMessage());
+
+        }
+    }
     /**
      * <code>getUsername</code> provides an access method for the user name variable as necessary.
      * @return      a string containing the contents of the userName variable

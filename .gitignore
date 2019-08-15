@@ -1,9 +1,6 @@
 # Compiled class file
 *.class
-
-# Intellij folder 
 .idea
-
 # Log file
 *.log
 
