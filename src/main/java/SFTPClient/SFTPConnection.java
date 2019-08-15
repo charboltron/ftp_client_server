@@ -3,10 +3,16 @@ package SFTPClient;
 import com.jcraft.jsch.*;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 //import java.lang.invoke.DirectMethodHandle$Holder;
 
 /**
- * {@link SFTPConnection} contains the code to create a new SFTP session, connect and disconnect.  It also contains commandsManager method, which gives the client additional functionality.
+ * {@link SFTPConnection} contains the code to create a new SFTP session, connect and
+ * disconnect.  It also contains commandsManager method, which gives the client
+ * additional functionality.  And it instantiates an {@link IdleTimer} object, which will
+ * cause the connection to time out after a predetermined amount of time if no
+ * input is received.
  */
 public class SFTPConnection {
 
@@ -16,7 +22,7 @@ public class SFTPConnection {
     ChannelSftp sftpChannel = null;
     Commands cmd;
     private final IdleTimer idleTimer = new IdleTimer(this);
-
+    private static final java.util.logging.Logger LOGGER = Logger.getLogger( "Commands" );
     /**
      * The constructor for the {@link SFTPConnection} takes in the username, host, and password parameters in order to use them with the getSession method from the com.jcraft.jsch library.
      * @param username      the username for the account on the remote SFTP server
@@ -24,7 +30,7 @@ public class SFTPConnection {
      * @param pwd           the password for the account on the remote SFTP server
      */
     SFTPConnection(String username, String host, String pwd){
-
+        LOGGER.log(Level.INFO, "Initliizing SFTP connection");
         this.username = username;
         this.host = host;
         this.pwd = pwd;
@@ -38,7 +44,7 @@ public class SFTPConnection {
      *  and finally makes the connection, unless an exception is received.
      */
     public void connect(JSch jsch){
-
+        LOGGER.log(Level.INFO, "Starting to connect");
         try {
 
             idleTimer.runIdleTimer();
@@ -52,8 +58,10 @@ public class SFTPConnection {
             sftpChannel = (ChannelSftp) session.openChannel("sftp");
             sftpChannel.connect(500);
             System.out.println("SFTP Channel created!");
+            LOGGER.log(Level.INFO, "SFTP channel created successfully");
 
         } catch (JSchException e) {
+            LOGGER.log(Level.INFO, "Failed to connect in SFTP object");
             System.out.println(e.getMessage());
         }
 
@@ -65,6 +73,7 @@ public class SFTPConnection {
      */
     public void disconnect(){
 
+        LOGGER.log(Level.INFO, "Disconnecting session");
         if (session.isConnected()) {
             sftpChannel.disconnect();
             session.disconnect();
@@ -90,6 +99,8 @@ public class SFTPConnection {
      * @throws IOException      Some of the commands being invoked through commandsManager throw an IOException from java.lang.Exception on failure.
      */
     public void commandsManager(String command) throws SftpException, IOException {
+        
+	LOGGER.log(Level.INFO, "Entering commandsManager");
         switch (command){
             case ("dirs"):
                 System.out.println("Remote directory: "+sftpChannel.pwd());
@@ -157,11 +168,22 @@ public class SFTPConnection {
                 break;
 
         }
+        LOGGER.log(Level.INFO, "Exiting command manager");
     }
 
+    /**
+     * The <code>idleWake</code> method is invoked on an SFTPConnection object by the
+     * {@link CommandLineInterface} class when it receives input.
+     */
     public void idleWake(){
         idleTimer.idleWake();
     }
 
-    public void timerCancel() {idleTimer.cancel();}
+    /**
+     * The <code>timerCancel</code> method is invoked on an SFTPConnection object by the
+     * {@link CommandLineInterface} class when it receives input.
+     */
+    public void timerCancel() {
+        idleTimer.cancel();
+    }
 }
