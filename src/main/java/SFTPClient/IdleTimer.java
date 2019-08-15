@@ -3,6 +3,8 @@ package SFTPClient;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The {@link IdleTimer} class includes everything that the SFTP client requires to
@@ -21,8 +23,10 @@ public class IdleTimer {
     long period = 1000L;
     private static long ACCEPTABLE_IDLE_TIME = 300000; // 300 secs (five minutes)
     private Timer ducks = new Timer();
+    private static final java.util.logging.Logger LOGGER = Logger.getLogger( "Commands" );
 
     IdleTimer(SFTPConnection sftpConnection){
+
         this.sftpConnection = sftpConnection;
         oldTime = System.currentTimeMillis();
     }
@@ -34,6 +38,7 @@ public class IdleTimer {
      * into a persistent timer.
      */
     public void runIdleTimer(){
+        LOGGER.log(Level.INFO, "Starting idle time");
         TimerTask repeatedTask = new TimerTask() {
             public void run() {
                 newTime = System.currentTimeMillis();

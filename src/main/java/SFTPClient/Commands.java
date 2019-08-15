@@ -5,6 +5,9 @@ import com.jcraft.jsch.*;
 import java.io.*;
 //import java.lang.invoke.DirectMethodHandle$Holder;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -14,6 +17,7 @@ import org.apache.commons.io.IOUtils;
 public class Commands {
 
     File currentLocalPath;
+    private static final java.util.logging.Logger LOGGER = Logger.getLogger( "Commands" );
 
     Commands(){this.currentLocalPath = new File("").getAbsoluteFile();}
 
@@ -25,6 +29,7 @@ public class Commands {
      */
     public void changeLocalDirectory() throws IOException {
 
+        LOGGER.log(Level.INFO, "Entering change local directory");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Current local path: "+currentLocalPath);
         System.out.println("Enter directory name relative to above: ");
@@ -32,9 +37,11 @@ public class Commands {
         String directoryPath = scanner.nextLine().trim();
         temp = new File(currentLocalPath +File.separator+directoryPath);
         if(!temp.isDirectory()) {
+            LOGGER.log(Level.INFO, "User tried to change into non-existance directory");
             System.out.println("The directory you tried to change to does not exist.");
             return;
         } else {
+            LOGGER.log(Level.INFO, "Changed directory");
             currentLocalPath = new File(temp.getCanonicalPath());
             System.out.println("Local directory: "+ currentLocalPath);
         }
@@ -50,13 +57,14 @@ public class Commands {
      */
     public static void changeRemoteDirectory(ChannelSftp sftpChannel) throws SftpException {
 
+        LOGGER.log(Level.INFO, "Changing remote directory");
         System.out.println("Current remote path: "+sftpChannel.pwd());
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter directory name relative to above: ");
         String directoryPath = scanner.nextLine().trim();
         sftpChannel.cd(directoryPath);
         System.out.println("Remote directory: "+directoryPath);
-
+        LOGGER.log(Level.INFO, "Successfully changed remote directory");
     }
 
     /**
@@ -69,6 +77,7 @@ public class Commands {
      */
     public static void printRemoteFile(ChannelSftp sftpChannel) throws SftpException {
 
+        LOGGER.log(Level.INFO, "Printing remote files");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the file you want to see:");
         String remoteFile = scanner.nextLine().trim();
@@ -82,7 +91,9 @@ public class Commands {
                 System.out.println(line);
             }
             br.close();
+            LOGGER.log(Level.INFO, "Successfully printed remote files");
         }catch(IOException e){
+            LOGGER.log(Level.SEVERE, "Failed printing remote files");
             System.out.println(e);
             return;
         }
@@ -95,6 +106,7 @@ public class Commands {
      */
     public void printLocalFile(){
 
+        LOGGER.log(Level.INFO, "Entering print local files");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the file you want to see:");
         String localf = scanner.nextLine().trim();
@@ -104,6 +116,7 @@ public class Commands {
         String line = null;
 
             try {
+                LOGGER.log(Level.INFO, "Attempting to print local files");
             fr = new FileReader(localFile);
             br = new BufferedReader(fr);
 
@@ -111,7 +124,9 @@ public class Commands {
                 System.out.println(line);
             }
             br.close();
+                LOGGER.log(Level.INFO, "Local files printed successfully");
         }catch(IOException e){
+                LOGGER.log(Level.SEVERE, "Error while printing local files");
             System.out.println(e);
             return;
         }
@@ -125,7 +140,9 @@ public class Commands {
      * @param flag              the only functional flag that can be passed is -al, which changes the output to long list format.
      */
     public static void listRemoteFiles(ChannelSftp sftpChannel, String flag) {
+
         try {
+            LOGGER.log(Level.INFO, "Attempting to list remote file");
             String workingDir = sftpChannel.pwd();
             Vector fileList = sftpChannel.ls(workingDir);
             for (int i = 0; i < fileList.size(); i++) {
@@ -138,7 +155,9 @@ public class Commands {
                     }
                 }
             }
+            LOGGER.log(Level.INFO, "Remote files listed successfully");
         } catch (SftpException e) {
+            LOGGER.log(Level.SEVERE, "Error while listeing remote files");
             System.out.println(e);
         }
     }
@@ -148,7 +167,7 @@ public class Commands {
      * then iterates through them, ignoring hidden files.
      */
     public void listLocalFiles() {
-
+        LOGGER.log(Level.INFO, "Listing local files");
         File[] files = currentLocalPath.listFiles();
         for (File f : files) {
             if ((f.isFile() || f.isDirectory()) && !(f.getName().startsWith("."))){
@@ -165,13 +184,17 @@ public class Commands {
      * @throws SftpException
      */
     public void uploadFiles(ChannelSftp sftpChannel) throws SftpException {
+        LOGGER.log(Level.INFO, "Entering upload files");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the file you want to upload: ");
         String path = scanner.nextLine().trim();
         try {
+            LOGGER.log(Level.INFO, "Attempting to upload files");
             FileInputStream source = new FileInputStream(currentLocalPath + File.separator + path);
             sftpChannel.put(source, sftpChannel.pwd() + File.separator + path);
+            LOGGER.log(Level.INFO, "Successfully uploaded files");
         } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failure to upload files");
             System.err.println("Unable to find input file");
             return;
         }
@@ -186,12 +209,16 @@ public class Commands {
      * @param sftpChannel       an open ftp session as created in {@link SFTPConnection} by the <code>connect</code> method.
      */
     public void makeRemoteDirectory(ChannelSftp sftpChannel) {
+        LOGGER.log(Level.INFO, "Entering make remote directory");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the name of the directory you want to create: ");
         String newDir = scanner.nextLine().trim();
         try {
+            LOGGER.log(Level.INFO, "Attempting to make remote directory");
             sftpChannel.mkdir(newDir);
+            LOGGER.log(Level.INFO, "Successfully made remote directory");
         } catch (SftpException e) {
+            LOGGER.log(Level.SEVERE, "Error while creating remote directory");
             e.printStackTrace();
             System.out.println("There was an error creating the directory on the remote server. See the message above.");
             return;
@@ -205,18 +232,22 @@ public class Commands {
      */
     public void makeLocalDirectory() {
 
+        LOGGER.log(Level.INFO, "Entering make local directory");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the name of the directory you want to create: ");
         String newLocalDir = scanner.nextLine().trim();
         boolean alreadyExists = (new File(currentLocalPath+File.separator+newLocalDir).isDirectory());
         if(alreadyExists){
+            LOGGER.log(Level.INFO, "Local directory already exists, aborting");
             System.out.println("Error. Existing directory: the directory you are trying to create already exists.");
             return;
         }
         boolean directoryCreated = (new File(currentLocalPath+File.separator+newLocalDir)).mkdir();
         if (directoryCreated) {
+            LOGGER.log(Level.INFO, "Directory created successfully");
             System.out.println("New local directory "+newLocalDir+" created!");
         } else {
+            LOGGER.log(Level.SEVERE, "Error while creating local directory");
             System.out.println("There was a problem creating a new directory");
         }
     }
@@ -228,12 +259,16 @@ public class Commands {
      * @param sftpChannel       an open ftp session as created in {@link SFTPConnection} by the <code>connect</code> method.
      */
     public void removeRemoteFile(ChannelSftp sftpChannel) {
+        LOGGER.log(Level.INFO, "Entering remove remote file");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the name of the file you want to delete: ");
         String removeRemoteFile = scanner.nextLine().trim();
         try {
+            LOGGER.log(Level.INFO, "Attempting to remove remote file");
             sftpChannel.rm(removeRemoteFile);
+            LOGGER.log(Level.INFO, "Successfully removed remote file");
         } catch (SftpException e) {
+            LOGGER.log(Level.SEVERE, "Error while removing remote file");
             e.printStackTrace();
             System.out.println("There was an error deleting the file on the remote server. See the message above.");
             return;
@@ -248,12 +283,16 @@ public class Commands {
      * @param sftpChannel       an open ftp session as created in {@link SFTPConnection} by the <code>connect</code> method.
      */
     public void removeRemoteDirectory(ChannelSftp sftpChannel) {
+        LOGGER.log(Level.INFO, "Entering remove remote directory");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the name of the directory you want to delete: ");
         String removeRemoteDirectory = scanner.nextLine().trim();
         try {
+            LOGGER.log(Level.INFO, "Attempting to remove remote directory");
             sftpChannel.rmdir(removeRemoteDirectory);
+            LOGGER.log(Level.INFO, "Successfully removed remote directory");
         } catch (SftpException e) {
+            LOGGER.log(Level.SEVERE, "Error while removing remote directory");
             e.printStackTrace();
             System.out.println("There was an error deleting the directory on the remote server. See the message above.");
             return;
@@ -270,14 +309,18 @@ public class Commands {
      */
     public void changeRemotePermissions(ChannelSftp sftpChannel) {
 
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the file you want to chmod: ");
         String chmodFile = scanner.nextLine().trim();
         System.out.println("Enter the permissions command: ");
         String chmodCodeStr = scanner.nextLine();
         try {
+            LOGGER.log(Level.INFO, "Attempting to change remote permissions");
             sftpChannel.chmod(Integer.parseInt(chmodCodeStr, 8),chmodFile);
+            LOGGER.log(Level.INFO, "Successfully changed remote permissions");
         } catch (SftpException | NumberFormatException e) {
+            LOGGER.log(Level.SEVERE, "Failed to change remote permissions");
             System.out.println(e.getMessage());
             System.out.println("Error. Could not change permissions or invalid chmod code. See the message above.");
             return;
@@ -294,6 +337,7 @@ public class Commands {
      * @throws SftpException
      */
     public void renameRemoteFile(ChannelSftp sftpChannel) throws SftpException {
+        LOGGER.log(Level.INFO, "Attempting to rename remote file");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the file you want to rename: ");
         String beforeFile = scanner.nextLine().trim();
@@ -302,9 +346,11 @@ public class Commands {
         String workingDir = sftpChannel.pwd();
         Vector fileList = sftpChannel.ls(workingDir);
         if (fileList.contains(afterFile)){
+            LOGGER.log(Level.INFO, "Error while renaming file: File name already exists");
             System.out.println("Error. There is already a file with that name!");
             return;
         }else{sftpChannel.rename(beforeFile, afterFile);
+            LOGGER.log(Level.INFO, "File rename successful");
             System.out.println("Rename was successful!");
             return;
         }
@@ -318,11 +364,13 @@ public class Commands {
      */
     public void renameLocalFile() {
 
+        LOGGER.log(Level.INFO, "Entering rename local file");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the file/path for the file/directory you want to rename: ");
         String pathOld = scanner.nextLine().trim();
         File oldLocalFile = new File(currentLocalPath+File.separator+pathOld);
         if (!oldLocalFile.exists()){
+            LOGGER.log(Level.WARNING, "File to rename does not exist");
             System.out.println("Error. The file you want to rename doesn't exist! Check your local directory using `dirs` or `lsl`");
             return;
         }
@@ -332,6 +380,7 @@ public class Commands {
         File newLocalFileRename = new File(currentLocalPath+File.separator+pathNew);
 
         if (newLocalFileRename.exists()) {
+            LOGGER.log(Level.WARNING, "Error while renaming local file: Name already exists");
             System.out.println("Error. Existing file: there is already a file or directory with the new name you're trying use.");
             return;
         }
@@ -339,8 +388,10 @@ public class Commands {
         oldLocalFile.renameTo(newLocalFileRename);
 
         if (!oldLocalFile.exists() && newLocalFileRename.exists()) {
+            LOGGER.log(Level.INFO, "File rename successful");
             System.out.println("File successfully renamed!");
         } else {
+            LOGGER.log(Level.SEVERE, "Error while renaming file");
             System.out.println("There was a problem renaming the file.");
         }
     }
@@ -376,10 +427,13 @@ public class Commands {
      * @param localFilePath
      */
     private void downloadFileGivenNameAndPath(ChannelSftp sftpChannel, String remoteFilePath, String localFilePath) {
+        LOGGER.log(Level.INFO, "Entering download file given name and path");
         InputStream remoteFile = null;
         try {
+            LOGGER.log(Level.INFO, "Attempting to download file");
             remoteFile = sftpChannel.get(remoteFilePath);
         } catch (SftpException ex) {
+            LOGGER.log(Level.INFO, "Error occured while trying to get remote file");
             System.err.println(ex.getMessage());
             System.out.println("An error occurred while trying to get the remote file: " + remoteFilePath);
             return;
@@ -387,10 +441,13 @@ public class Commands {
         OutputStream fileOut = null;
         File writeFile = new File(this.currentLocalPath + File.separator + localFilePath);
         try {
+            LOGGER.log(Level.INFO, "Attempting to get file");
             fileOut = new FileOutputStream(writeFile);
             IOUtils.copy(remoteFile, fileOut);
             fileOut.close();
+            LOGGER.log(Level.INFO, "Successfully got file");
         } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error getting file");
             System.err.println(e.getMessage());
             System.out.println("error getting file: " + localFilePath);
             return;
@@ -406,10 +463,12 @@ public class Commands {
      * @param sftpChannel        an open ftp session as created in {@link SFTPConnection} by the <code>connect</code> method.
      */
     public void downloadFile(ChannelSftp sftpChannel) {
+        LOGGER.log(Level.INFO, "Attempting to download file");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the path to the file you want to download (relative to current remote directory): ");
         String readPath = scanner.nextLine().trim();
         if (readPath.equals("")) {
+            LOGGER.log(Level.INFO, "Error: Cant get empty filename");
             System.out.println("Can't get an empty filename!");
             return;
         }
@@ -456,6 +515,7 @@ public class Commands {
      * @param sftpChannel        an open ftp session as created in {@link SFTPConnection} by the <code>connect</code> method.
      */
     public void downloadMultipleFiles(ChannelSftp sftpChannel) {
+        LOGGER.log(Level.INFO, "Attempting to download multiple files");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter a list of space-separated paths to the file(s) you want to download (relative to current remote directory): ");
         String userInputListOfFilesRemote = scanner.nextLine().trim();
@@ -465,6 +525,7 @@ public class Commands {
         String[] listOfFilesLocal = userInputListOfFilesLocal.split(" ");
         if (listOfFilesLocal.length > listOfFilesRemote.length) {
             System.out.println("Too many local filenames specified!");
+            LOGGER.log(Level.WARNING, "Too many local filenames given");
             return;
         }
         for (int i = 0; i < listOfFilesRemote.length; i++) {
@@ -472,6 +533,7 @@ public class Commands {
             String writePath = getWritePathFromGivenParams(listOfFilesLocal, listOfFilesRemote, i);
             downloadFileGivenNameAndPath(sftpChannel, readPath, writePath);
         }
+        LOGGER.log(Level.INFO, "Successfully downloaded multiple files");
     }
 
 }
