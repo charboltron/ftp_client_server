@@ -83,6 +83,12 @@ public class CommandLineInterface {
      */
     public static void main(String ... args) throws IOException {
 
+	if(!enableLogging)//This must be toggled manually in the code to enable logging
+        {
+	    LOGGER.log(Level.INFO, "Disabling logging");
+		System.out.println("Logging is diabled");
+            LogManager.getLogManager().reset();
+        }
         LOGGER.log(Level.INFO, "Starting Program");
         if(args.length!=0){argz = args; argzbool=true;}
         // instantiate new CLI object
