@@ -3,5 +3,10 @@ FTP client server written in Java as an exercise in Java Networking using Agile 
 
 Agile Team Members:
 
-Tom Lancaster github: tlan2
-Aidan Wolfe   github: 
+David Wolack:  https://github.com/wolakdav  
+Tom Lancaster  https://github.com/tlan2  
+Mike McGrath   https://github.com/duck84  
+William Mass   https://github.com/WilliamMass  
+Logan Ballard  https://github.com/loganballard  
+Aidan Wolfe    https://github.com/aidan1221  
+Charles Bolton 
